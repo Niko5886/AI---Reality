@@ -9,6 +9,25 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='9' fill='%2306192f'/%3E%3Ctext x='24' y='35' font-family='Inter,Arial,sans-serif' font-size='30' font-weight='700' fill='%23edf6fd' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E">
+
+<meta name="description" content="Nival — a studio crafting digital identities for a new kind of presence, where reality merges with the virtual. Explore identity series, adaptive materials and cyberspaces.">
+<link rel="canonical" href="https://nival.studio/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nival">
+<meta property="og:title" content="Nival — Cyberspace Identity">
+<meta property="og:description" content="Digital identities for a new kind of presence — where reality merges with the virtual.">
+<meta property="og:url" content="https://nival.studio/">
+<meta property="og:image" content="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260914_123926_0b39c6be-4379-40e0-97be-800fc57c3bf6.png&amp;w=1920&amp;q=85">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nival — Cyberspace Identity">
+<meta name="twitter:description" content="Digital identities for a new kind of presence — where reality merges with the virtual.">
+<meta name="twitter:image" content="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260914_123926_0b39c6be-4379-40e0-97be-800fc57c3bf6.png&amp;w=1920&amp;q=85">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Nival">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Nival","alternateName":"Nival Studio","description":"A studio crafting digital identities for a new kind of presence — where reality merges with the virtual.","url":"https://nival.studio/","email":"hello@nival.studio","slogan":"Cyberspace — reality merges with the virtual"}
+</script>
 <style>
 /* ============================================================
    NIVAL — CYBERSPACE IDENTITY
@@ -512,6 +531,8 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(17,105,220,.55);outl
 /* fallback cross-fade only when the View Transitions API is unavailable */
 html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.5s}
+/* skip rendering work for inactive panel views (perf) */
+.view-panel:not(.is-active){content-visibility:auto;contain-intrinsic-size:900px 700px}
 
 /* panel views (Pricing / About / Contact) */
 .view-panel{
@@ -1249,12 +1270,15 @@ html.intro .avatar{transform:scale(.9)}
       'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/64e651b1-a8ba-44e8-8fbe-e85fcd6e5cf0.png'
     ]
   };
-  var set=function(sel,url){document.querySelectorAll(sel).forEach(function(el){el.src=url});};
+  var set=function(sel,url){document.querySelectorAll(sel).forEach(function(el){el.decoding='async';el.src=url});};
   set('[data-hero]',A.front);
   set('[data-hero-front]',A.front);
   set('[data-hero-back]',A.back);
   set('[data-material]',A.material);
   for(var i=1;i<=5;i++){set('[data-av'+i+']',A.av[i-1]);}
+  // warm-decode the reveal layer so the spotlight is crisp on first hover
+  var hb=document.querySelector('[data-hero-back]');
+  if(hb&&hb.decode){hb.decode().catch(function(){});}
 })();
 
 /* ============================================================
@@ -1347,9 +1371,13 @@ html.intro .avatar{transform:scale(.9)}
     back.style.webkitMaskImage='url('+url+')';
   }
 
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var EASE=reduce?1:0.1;                 // snap instantly under reduced motion
+  var homeView=stack.closest('.view');   // pause the costly mask when Home is hidden
   function loop(){
-    smooth.x+=(mouse.x-smooth.x)*0.1;
-    smooth.y+=(mouse.y-smooth.y)*0.1;
+    if(homeView && !homeView.classList.contains('is-active')){requestAnimationFrame(loop);return;}
+    smooth.x+=(mouse.x-smooth.x)*EASE;
+    smooth.y+=(mouse.y-smooth.y)*EASE;
     render(smooth.x,smooth.y);
     requestAnimationFrame(loop);
   }
@@ -1807,6 +1835,24 @@ html.intro .avatar{transform:scale(.9)}
 
   window.NIVAL=window.NIVAL||{};
   window.NIVAL.openJoin=open;
+})();
+
+/* ============================================================
+   PWA — inline web app manifest (no external file, stays single-file)
+   ============================================================ */
+(function(){
+  try{
+    var icon="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='9' fill='%2306192f'/%3E%3Ctext x='24' y='35' font-family='Inter,Arial,sans-serif' font-size='30' font-weight='700' fill='%23edf6fd' text-anchor='middle'%3EN%3C/text%3E%3C/svg%3E";
+    var m={
+      name:"Nival — Cyberspace Identity",short_name:"Nival",
+      description:"Digital identities for a new kind of presence.",
+      start_url:".",scope:".",display:"standalone",
+      background_color:"#d6e6f5",theme_color:"#d6e6f5",
+      icons:[{src:icon,sizes:"any",type:"image/svg+xml",purpose:"any maskable"}]
+    };
+    var url=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:"application/manifest+json"}));
+    var l=document.createElement('link');l.rel="manifest";l.href=url;document.head.appendChild(l);
+  }catch(e){}
 })();
 
 /* ============================================================
