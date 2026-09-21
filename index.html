@@ -547,11 +547,30 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
   background:linear-gradient(135deg,rgba(255,255,255,.68),rgba(238,246,253,.52));
   box-shadow:inset 0 0 22px rgba(255,255,255,.4),0 10px 28px rgba(65,94,123,.09);
   backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  --ty:0px;
+  transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));
+  transform-style:preserve-3d;
+  transition:transform .45s cubic-bezier(.22,.61,.36,1),box-shadow .45s ease;
+  will-change:transform;
 }
+.tier.is-tilt{transition:transform .1s ease,box-shadow .4s ease;--ty:-10px}
+.tier.is-tilt{box-shadow:inset 0 0 22px rgba(255,255,255,.45),0 24px 48px rgba(65,94,123,.17)}
 .tier.featured{
   background:linear-gradient(135deg,rgba(255,255,255,.8),rgba(233,244,253,.62));
   border-color:rgba(17,105,220,.45);
   box-shadow:0 0 0 1px rgba(17,105,220,.35),inset 0 0 26px rgba(255,255,255,.5),0 18px 44px rgba(17,105,220,.2);
+}
+.tier.featured.is-tilt{box-shadow:0 0 0 1px rgba(17,105,220,.5),inset 0 0 26px rgba(255,255,255,.55),0 28px 58px rgba(17,105,220,.3)}
+/* cursor-following light glare (sits above the glass, below the content) */
+.tier-glare{
+  position:absolute;inset:0;z-index:-1;border-radius:inherit;pointer-events:none;
+  opacity:0;transition:opacity .3s ease;
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.55),transparent 62%);
+}
+.tier.is-tilt .tier-glare{opacity:1}
+@media (prefers-reduced-motion:reduce){
+  .tier{transform:none!important}
+  .tier-glare{display:none}
 }
 .tier-tag{position:absolute;top:-11px;left:24px;padding:5px 13px;border-radius:20px;font-size:12px;letter-spacing:.03em;color:#fff;background:linear-gradient(135deg,#1a7bef,#1169dc);box-shadow:0 6px 16px rgba(17,105,220,.35)}
 .tier-name{margin:0;font-size:22px;font-weight:500}
@@ -937,6 +956,7 @@ html.intro .avatar{transform:scale(.9)}
           <div class="pricing-grid">
             <!-- Starter -->
             <article class="tier">
+              <span class="tier-glare" aria-hidden="true"></span>
               <h3 class="tier-name">Starter</h3>
               <p class="tier-desc">For exploring your first identity.</p>
               <div class="tier-price"><span class="cur">€</span><span class="amt" data-mo="0" data-yr="0">0</span><span class="per">/mo</span></div>
@@ -952,6 +972,7 @@ html.intro .avatar{transform:scale(.9)}
 
             <!-- Identity Pro (featured) -->
             <article class="tier featured">
+              <span class="tier-glare" aria-hidden="true"></span>
               <span class="tier-tag">Most popular</span>
               <h3 class="tier-name">Identity Pro</h3>
               <p class="tier-desc">For creators shaping a living presence.</p>
@@ -969,6 +990,7 @@ html.intro .avatar{transform:scale(.9)}
 
             <!-- Studio -->
             <article class="tier">
+              <span class="tier-glare" aria-hidden="true"></span>
               <h3 class="tier-name">Studio</h3>
               <p class="tier-desc">For teams building at scale.</p>
               <div class="tier-price"><span class="cur">€</span><span class="amt" data-mo="59" data-yr="47">59</span><span class="per">/mo</span></div>
@@ -1414,6 +1436,46 @@ html.intro .avatar{transform:scale(.9)}
   });
 
   setBill('monthly');
+})();
+
+/* ============================================================
+   PRICING — cursor-following 3D tilt + glare on the cards
+   ============================================================ */
+(function(){
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+  var cards=Array.prototype.slice.call(document.querySelectorAll('.pricing-grid .tier'));
+  var MAX=6; // max tilt in degrees
+
+  cards.forEach(function(card){
+    var raf=null,rx=0,ry=0,mx=50,my=50;
+    function paint(){
+      raf=null;
+      card.style.setProperty('--rx',rx.toFixed(2)+'deg');
+      card.style.setProperty('--ry',ry.toFixed(2)+'deg');
+      card.style.setProperty('--mx',mx.toFixed(1)+'%');
+      card.style.setProperty('--my',my.toFixed(1)+'%');
+    }
+    card.addEventListener('pointerenter',function(e){
+      if(e.pointerType==='touch')return;
+      card.classList.add('is-tilt');
+    });
+    card.addEventListener('pointermove',function(e){
+      if(e.pointerType==='touch')return;
+      var r=card.getBoundingClientRect();
+      var px=(e.clientX-r.left)/r.width;   // 0..1
+      var py=(e.clientY-r.top)/r.height;   // 0..1
+      ry=(px-0.5)*2*MAX;                   // horizontal -> rotateY
+      rx=-(py-0.5)*2*MAX;                  // vertical   -> rotateX
+      mx=px*100; my=py*100;
+      if(!raf)raf=requestAnimationFrame(paint);
+    });
+    card.addEventListener('pointerleave',function(){
+      card.classList.remove('is-tilt');
+      rx=ry=0;mx=my=50;
+      card.style.setProperty('--rx','0deg');
+      card.style.setProperty('--ry','0deg');
+    });
+  });
 })();
 
 /* ============================================================
