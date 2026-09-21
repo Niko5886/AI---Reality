@@ -349,8 +349,9 @@ img{-webkit-user-drag:none;user-select:none}
   position:absolute;
   left:calc(var(--fx) + 46px);
   top:757px;
-  z-index:5;
-  display:flex;align-items:center;gap:16px;
+  z-index:8;
+  width:447px;                 /* end of "design" lands under NIKO's last "O" */
+  display:flex;align-items:center;justify-content:flex-end;gap:16px;
   font-weight:500;
   font-size:31px;
   line-height:1;
@@ -746,7 +747,7 @@ html.intro .avatar{transform:scale(.9)}
 .is-mobile .features{right:calc(var(--fx) + 24px);top:299px;width:194px;font-size:16px;gap:8px}
 .is-mobile .feature{gap:13px}
 .is-mobile .ghost-one{left:calc(var(--fx) + 13px);top:621px;font-size:142px}
-.is-mobile .ghost-tag{left:calc(var(--fx) + 16px);top:748px;font-size:21px;letter-spacing:.48em;gap:12px}
+.is-mobile .ghost-tag{left:calc(var(--fx) + 16px);top:748px;width:344px;justify-content:flex-end;font-size:21px;letter-spacing:.48em;gap:12px}
 .is-mobile .ghost-tag-rule{flex-basis:22px;width:22px}
 .is-mobile .o-gap{width:79px}
 .is-mobile .ghost-two{left:364px;top:804px;font-size:104px}
@@ -837,7 +838,7 @@ html.intro .avatar{transform:scale(.9)}
   .is-phone .ghost-two{font-size:calc(var(--gf) * .87);justify-self:end;align-self:end;margin-bottom:clamp(24px,8vw,52px);left:auto;top:auto}
   .is-phone .robo-o-avatar{position:relative;font-size:var(--gf);justify-self:start;align-self:start;margin-top:calc(var(--gm) + .0317em);margin-left:1.75em;width:.7566em;height:.7566em;border-width:.0423em;left:auto;top:auto;transform:none}
   .is-phone .robo-o-avatar img{left:-.0212em;top:.0265em;width:.6138em;height:.7778em}
-  .is-phone .ghost-tag{grid-area:art;justify-self:start;align-self:start;margin-top:calc(var(--gm) + var(--gf) * .96);margin-left:.05em;left:auto;top:auto;font-size:clamp(11px,3.3vw,15px);letter-spacing:.42em;gap:clamp(8px,2.4vw,13px);z-index:5}
+  .is-phone .ghost-tag{grid-area:art;justify-self:start;align-self:start;justify-content:flex-end;width:calc(var(--gf) * 2.5);margin-top:calc(var(--gm) + var(--gf) * .96);left:auto;top:auto;font-size:clamp(11px,3.3vw,15px);letter-spacing:.42em;gap:clamp(8px,2.4vw,13px);z-index:8}
   .is-phone .ghost-tag-rule{flex-basis:clamp(16px,5vw,26px);width:clamp(16px,5vw,26px)}
 
   .is-phone .material{grid-area:mat;width:100%;height:auto;margin-top:clamp(30px,10vw,56px);right:auto;top:auto;transform:none}
