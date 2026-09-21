@@ -753,6 +753,119 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(17,105,220,.55);outl
   }
   loop();
 })();
+
+/* ============================================================
+   §6  INTERACTIONS
+   ============================================================ */
+(function(){
+  var stage=document.querySelector('.stage');
+  var toast=document.querySelector('.toast');
+  var burger=document.querySelector('.menu');
+  var panel=document.querySelector('.menu-panel');
+  var hero=document.getElementById('hero');
+  var toastTimer;
+
+  function say(msg){
+    if(!toast)return;
+    toast.textContent=msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){toast.classList.remove('show');},1700);
+  }
+
+  /* ---- hamburger menu ---- */
+  function setMenu(open){
+    stage.classList.toggle('menu-open',open);
+    burger.setAttribute('aria-expanded',open?'true':'false');
+    if(panel)panel.setAttribute('aria-hidden',open?'false':'true');
+  }
+  function openMenu(){
+    setMenu(true);
+    say('Menu ready');
+    if(stage.classList.contains('nav-compact')){
+      requestAnimationFrame(function(){var a=panel&&panel.querySelector('a');if(a)a.focus();});
+    }
+  }
+  function closeMenu(silent){
+    if(!stage.classList.contains('menu-open'))return;
+    setMenu(false);
+    if(!silent)say('Menu closed');
+  }
+  burger.addEventListener('click',function(){
+    stage.classList.contains('menu-open')?closeMenu():openMenu();
+  });
+  addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&stage.classList.contains('menu-open')){closeMenu();burger.focus();}
+  });
+  addEventListener('pointerdown',function(e){
+    if(!stage.classList.contains('menu-open'))return;
+    if(panel&&panel.contains(e.target))return;
+    if(burger.contains(e.target))return;
+    closeMenu(true);
+  },true);
+
+  /* ---- nav links (sync active across BOTH menus) ---- */
+  var navLinks=Array.prototype.slice.call(document.querySelectorAll('.nav a,.menu-panel a'));
+  navLinks.forEach(function(link){
+    link.addEventListener('click',function(e){
+      e.preventDefault();
+      var label=link.textContent.trim();
+      navLinks.forEach(function(l){l.classList.toggle('active',l.textContent.trim()===label);});
+      closeMenu(true);
+      say(label);
+    });
+  });
+
+  /* ---- join buttons (both header + menu-panel) ---- */
+  var joined=false;
+  document.querySelectorAll('.join').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      joined=!joined;
+      document.querySelectorAll('.join .join-label').forEach(function(l){l.textContent=joined?'Joined':'Join us';});
+      say(joined?'Welcome to Nival':'See you soon');
+    });
+  });
+
+  /* ---- play / eye ---- */
+  var play=document.querySelector('.play');
+  if(play)play.addEventListener('click',function(){
+    var on=play.classList.toggle('active');
+    if(hero)hero.classList.toggle('awake',on);
+    play.setAttribute('aria-pressed',on?'true':'false');
+    say(on?'Identity activated':'Identity paused');
+  });
+  var eye=document.querySelector('.eye');
+  if(eye)eye.addEventListener('click',function(){
+    var on=hero&&hero.classList.toggle('awake');
+    say(on?'Previewing live identity':'Preview paused');
+  });
+
+  /* ---- avatar gallery ---- */
+  var avatars=Array.prototype.slice.call(document.querySelectorAll('.avatar'));
+  var current=0;
+  function pad(n){return (n<10?'0':'')+n;}
+  function choose(i){
+    if(!avatars.length)return;
+    current=((i%avatars.length)+avatars.length)%avatars.length;
+    var btn=avatars[current];
+    avatars.forEach(function(a){a.classList.toggle('active',a===btn);});
+    if(hero){
+      hero.style.setProperty('--hero-hue',(btn.getAttribute('data-hue')||'0')+'deg');
+      hero.style.setProperty('--hero-sat',btn.getAttribute('data-sat')||'1');
+    }
+    say('Identity '+pad(current+1));
+  }
+  avatars.forEach(function(btn,i){btn.addEventListener('click',function(){choose(i);});});
+  var shuffle=document.querySelector('.shuffle');
+  if(shuffle)shuffle.addEventListener('click',function(){choose(current+1);});
+  var matNext=document.querySelector('.material-next');
+  if(matNext)matNext.addEventListener('click',function(){choose(current+1);});
+
+  /* ---- socials ---- */
+  document.querySelectorAll('.social').forEach(function(btn){
+    btn.addEventListener('click',function(){say((btn.getAttribute('data-name')||'Social')+' selected');});
+  });
+})();
 </script>
 </body>
 </html>
