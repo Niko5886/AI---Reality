@@ -577,6 +577,32 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 .tier.featured .tick{background:var(--blue)}
 .tick svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 
+/* ---------- About view ---------- */
+.about-lead{margin:0;max-width:720px;font-size:clamp(18px,2vw,22px);line-height:1.5;color:#3f5164}
+.chain-divider{margin:30px 0;color:var(--ink);opacity:.5}
+.chain-divider .chain{width:160px;height:52px;flex:none}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:0}
+.stat{
+  padding:22px;border-radius:20px;
+  border:1px solid rgba(255,255,255,.45);
+  background:linear-gradient(135deg,rgba(255,255,255,.5),rgba(239,247,253,.4));
+  box-shadow:inset 0 0 18px rgba(255,255,255,.3),0 6px 20px rgba(65,94,123,.05);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.stat-num{display:block;font-size:clamp(34px,4vw,46px);font-weight:500;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+.stat-label{display:block;margin-top:8px;font-size:14px;color:#77899b}
+
+.timeline{list-style:none;margin:34px 0 0;padding:0}
+.tl-item{position:relative;display:grid;grid-template-columns:40px 1fr;gap:18px;padding:0 0 26px}
+.tl-item:before{content:"";position:absolute;left:19px;top:8px;bottom:-4px;width:2px;background:linear-gradient(rgba(17,105,220,.35),rgba(120,140,160,.15))}
+.tl-item:last-child{padding-bottom:0}
+.tl-item:last-child:before{display:none}
+.tl-no{position:relative;z-index:1;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#5e7082;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.6);box-shadow:0 4px 12px rgba(65,94,123,.08)}
+.tl-item.is-current .tl-no{background:linear-gradient(135deg,#0b2b50,#06192f);color:#fff;border-color:transparent}
+.tl-body h4{margin:8px 0 0;font-size:19px;font-weight:500}
+.tl-item.is-current .tl-body h4:after{content:"· now";color:var(--blue);font-size:14px;margin-left:8px}
+.tl-body p{margin:6px 0 0;max-width:560px;font-size:15px;line-height:1.4;color:#77899b}
+
 /* ============================================================
    §7  ENTRANCE ANIMATION — pre-state (removed once timeline ends)
    ============================================================ */
@@ -965,7 +991,39 @@ html.intro .avatar{transform:scale(.9)}
         <p class="view-eyebrow"><span class="verified" aria-hidden="true"><svg viewBox="0 0 11 11"><path d="M2.2 6.2 4.7 8.5 9.8 3"/></svg></span>Studio</p>
         <h2 class="view-title" id="about-h" tabindex="-1">About Nival</h2>
         <p class="view-sub">A studio crafting digital identities for a new kind of presence — where reality merges with the virtual.</p>
-        <div class="view-body" data-body="about"></div>
+        <div class="view-body" data-body="about">
+          <p class="about-lead">Nival is a studio for digital identity — a place where a person becomes a presence. We design androids, adaptive materials and cyberspaces where reality merges with the virtual, one identity series at a time.</p>
+
+          <div class="chain-divider" aria-hidden="true">
+            <svg class="chain" viewBox="0 0 151 48"><path fill-rule="evenodd" d="M2 24a25 22 0 1 0 50 0a25 22 0 1 0 -50 0ZM12 24a15 13 0 1 0 30 0a15 13 0 1 0 -30 0ZM50.5 24a25 22 0 1 0 50 0a25 22 0 1 0 -50 0ZM60.5 24a15 13 0 1 0 30 0a15 13 0 1 0 -30 0ZM99 24a25 22 0 1 0 50 0a25 22 0 1 0 -50 0ZM109 24a15 13 0 1 0 30 0a15 13 0 1 0 -30 0Z"/></svg>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat"><span class="stat-num" data-count="105" data-prefix="+">+0</span><span class="stat-label">kinds of avatars</span></div>
+            <div class="stat"><span class="stat-num" data-count="12">0</span><span class="stat-label">identity series</span></div>
+            <div class="stat"><span class="stat-num" data-count="40" data-suffix="+">0</span><span class="stat-label">adaptive materials</span></div>
+            <div class="stat"><span class="stat-num" data-count="8" data-suffix="k+">0</span><span class="stat-label">creators worldwide</span></div>
+          </div>
+
+          <ol class="timeline">
+            <li class="tl-item">
+              <span class="tl-no">01</span>
+              <div class="tl-body"><h4>Genesis</h4><p>Our first white-and-silver android — the blueprint for every identity that followed.</p></div>
+            </li>
+            <li class="tl-item is-current">
+              <span class="tl-no">02</span>
+              <div class="tl-body"><h4>Cyberspace</h4><p>Reality merges with the virtual. Adaptive armor, real-time collaboration and a living, breathing presence.</p></div>
+            </li>
+            <li class="tl-item">
+              <span class="tl-no">03</span>
+              <div class="tl-body"><h4>Adaptive materials</h4><p>Surfaces that respond to light, motion and mood in real time.</p></div>
+            </li>
+            <li class="tl-item">
+              <span class="tl-no">04</span>
+              <div class="tl-body"><h4>Collective</h4><p>Shared identity workspaces for teams and studios — coming soon.</p></div>
+            </li>
+          </ol>
+        </div>
       </div>
     </section>
 
@@ -1270,6 +1328,7 @@ html.intro .avatar{transform:scale(.9)}
     if(doFocus)focusView(id);
     announce(id);
     try{window.scrollTo(0,0);}catch(e){}
+    document.dispatchEvent(new CustomEvent('nival:view',{detail:{id:id}}));
   }
 
   function navigate(id,opts){
@@ -1351,6 +1410,42 @@ html.intro .avatar{transform:scale(.9)}
   });
 
   setBill('monthly');
+})();
+
+/* ============================================================
+   ABOUT — count-up stats (run once when the view opens)
+   ============================================================ */
+(function(){
+  var view=document.querySelector('[data-view="about"]');
+  if(!view)return;
+  var nums=Array.prototype.slice.call(view.querySelectorAll('.stat-num'));
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var done=false;
+
+  function fmt(el,val){
+    return (el.getAttribute('data-prefix')||'')+val+(el.getAttribute('data-suffix')||'');
+  }
+  function animate(el){
+    var target=parseInt(el.getAttribute('data-count'),10)||0;
+    if(reduce){el.textContent=fmt(el,target);return;}
+    var dur=1100,start=null;
+    function frame(t){
+      if(start===null)start=t;
+      var p=Math.min((t-start)/dur,1);
+      var eased=1-Math.pow(1-p,3);
+      el.textContent=fmt(el,Math.round(target*eased));
+      if(p<1)requestAnimationFrame(frame);
+      else el.textContent=fmt(el,target);
+    }
+    requestAnimationFrame(frame);
+  }
+  function run(){ if(done)return; done=true; nums.forEach(animate); }
+
+  document.addEventListener('nival:view',function(e){
+    if(e.detail && e.detail.id==='about')run();
+  });
+  // if deep-linked straight to #about on load
+  if(view.classList.contains('is-active'))run();
 })();
 
 /* ============================================================
