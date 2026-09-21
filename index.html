@@ -671,6 +671,29 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
   border:1px solid rgba(255,255,255,.6);background:rgba(246,250,255,.6);box-shadow:inset 0 0 10px rgba(255,255,255,.5);transition:.2s}
 .cs-again:hover{background:#fff}
 
+/* ---------- Join modal ---------- */
+.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:24px}
+.modal-backdrop{position:absolute;inset:0;background:rgba(10,26,44,.34);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .28s ease}
+.modal-card{position:relative;width:100%;max-width:440px;padding:30px;border-radius:26px;
+  border:1px solid rgba(255,255,255,.6);
+  background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(233,244,253,.82));
+  box-shadow:0 0 0 1px rgba(255,255,255,.4),0 30px 70px rgba(20,40,70,.28);
+  backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+  transform:translateY(14px) scale(.98);opacity:0;
+  transition:transform .3s cubic-bezier(.22,.61,.36,1),opacity .3s ease}
+.modal.is-open .modal-backdrop{opacity:1}
+.modal.is-open .modal-card{transform:none;opacity:1}
+.modal-x{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:.2s}
+.modal-x:hover{background:rgba(255,255,255,.6)}
+.modal-x svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.modal-title{margin:2px 0 0;font-size:30px;font-weight:400;letter-spacing:-.02em}
+.modal-desc{margin:10px 0 0;font-size:15px;line-height:1.45;color:#5e7082}
+.join-form{margin-top:20px;display:grid;gap:14px}
+.join-form .cf-submit{justify-self:stretch;justify-content:center;text-align:center}
+.join-ok{display:grid;justify-items:start;gap:8px;margin-top:14px}
+.join-ok h3{margin:6px 0 0;font-size:22px;font-weight:500;outline:none}
+.join-ok p{margin:0;max-width:340px;font-size:15px;color:#77899b}
+
 /* ============================================================
    §7  ENTRANCE ANIMATION — pre-state (removed once timeline ends)
    ============================================================ */
@@ -885,7 +908,7 @@ html.intro .avatar{transform:scale(.9)}
         <a href="#about" data-route="about">About</a>
         <a href="#contact" data-route="contact">Contact</a>
       </nav>
-      <button class="join" aria-label="Join us">
+      <button class="join" aria-label="Join us" aria-haspopup="dialog">
         <span class="join-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4.5 21c.4-5 3.1-7.3 7.5-7.3s7.1 2.3 7.5 7.3"/></svg></span>
         <span class="join-label">Join us</span>
       </button>
@@ -1170,7 +1193,7 @@ html.intro .avatar{transform:scale(.9)}
       <a href="#pricing" data-route="pricing">Pricing</a>
       <a href="#about" data-route="about">About</a>
       <a href="#contact" data-route="contact">Contact</a>
-      <button class="menu-join join" aria-label="Join us">
+      <button class="menu-join join" aria-label="Join us" aria-haspopup="dialog">
         <span class="join-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4.5 21c.4-5 3.1-7.3 7.5-7.3s7.1 2.3 7.5 7.3"/></svg></span>
         <span class="join-label">Join us</span>
       </button>
@@ -1178,6 +1201,36 @@ html.intro .avatar{transform:scale(.9)}
 
   </div>
 </main>
+
+<!-- ===== JOIN MODAL ===== -->
+<div class="modal" id="join-modal" hidden>
+  <div class="modal-backdrop" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="join-title" aria-describedby="join-desc">
+    <button class="modal-x" data-close type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 18 18M18 6 6 18"/></svg>
+    </button>
+    <p class="view-eyebrow"><span class="verified" aria-hidden="true"><svg viewBox="0 0 11 11"><path d="M2.2 6.2 4.7 8.5 9.8 3"/></svg></span>Membership</p>
+    <h2 class="modal-title" id="join-title">Join Nival</h2>
+    <p class="modal-desc" id="join-desc">Get early access to new identity series, adaptive materials and studio drops.</p>
+
+    <form class="join-form" novalidate>
+      <div class="field">
+        <label for="jf-email">Email</label>
+        <input id="jf-email" name="email" type="email" placeholder="you@studio.com" autocomplete="email" required>
+        <span class="field-err" id="join-err"></span>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+      <button type="submit" class="cf-submit">Join the studio</button>
+    </form>
+
+    <div class="join-ok" hidden>
+      <span class="cs-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5 10 18 20 6"/></svg></span>
+      <h3>You're on the list</h3>
+      <p>Welcome to Nival — watch your inbox for the next identity drop.</p>
+      <button type="button" class="cs-again" data-close>Done</button>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
@@ -1355,15 +1408,7 @@ html.intro .avatar{transform:scale(.9)}
 
   /* nav-link routing is owned by the view router (below); menu just closes there */
 
-  /* ---- join buttons (both header + menu-panel) ---- */
-  var joined=false;
-  document.querySelectorAll('.join').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      joined=!joined;
-      document.querySelectorAll('.join .join-label').forEach(function(l){l.textContent=joined?'Joined':'Join us';});
-      say(joined?'Welcome to Nival':'See you soon');
-    });
-  });
+  /* join buttons open the Join modal — owned by the modal module below */
 
   /* ---- play / eye ---- */
   var play=document.querySelector('.play');
@@ -1677,6 +1722,91 @@ html.intro .avatar{transform:scale(.9)}
     form.hidden=false;
     var n=form.elements['name'];if(n)n.focus();
   });
+})();
+
+/* ============================================================
+   JOIN MODAL — accessible dialog (focus trap, Esc, honeypot)
+   ============================================================ */
+(function(){
+  var modal=document.getElementById('join-modal');
+  if(!modal)return;
+  var card=modal.querySelector('.modal-card');
+  var form=modal.querySelector('.join-form');
+  var ok=modal.querySelector('.join-ok');
+  var email=form.elements['email'];
+  var errEl=modal.querySelector('#join-err');
+  var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var say=function(m){if(window.NIVAL&&window.NIVAL.say)window.NIVAL.say(m);};
+  var trigger=null,closeTimer=null,prevOverflow='';
+
+  function focusable(){
+    return Array.prototype.slice.call(
+      card.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])')
+    ).filter(function(el){return !el.closest('[hidden]') && el.offsetParent!==null;});
+  }
+  function setError(msg){
+    if(msg){email.setAttribute('aria-invalid','true');if(errEl){errEl.textContent=msg;errEl.classList.add('show');email.setAttribute('aria-describedby','join-err');}}
+    else{email.removeAttribute('aria-invalid');email.removeAttribute('aria-describedby');if(errEl){errEl.textContent='';errEl.classList.remove('show');}}
+  }
+  function open(t){
+    trigger=t||document.activeElement;
+    clearTimeout(closeTimer);
+    if(ok)ok.hidden=true;
+    if(form)form.hidden=false;
+    setError('');
+    modal.hidden=false;
+    prevOverflow=document.documentElement.style.overflow;
+    document.documentElement.style.overflow='hidden';
+    requestAnimationFrame(function(){modal.classList.add('is-open');});
+    setTimeout(function(){if(email)email.focus();},40);
+  }
+  function close(){
+    modal.classList.remove('is-open');
+    document.documentElement.style.overflow=prevOverflow;
+    var done=function(){modal.hidden=true;};
+    if(reduce)done(); else closeTimer=setTimeout(done,300);
+    if(trigger&&trigger.focus)trigger.focus();
+  }
+
+  document.querySelectorAll('.join').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(window.NIVAL&&window.NIVAL.closeMenu)window.NIVAL.closeMenu(true);
+      open(btn);
+    });
+  });
+  modal.querySelectorAll('[data-close]').forEach(function(el){el.addEventListener('click',close);});
+
+  modal.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){e.preventDefault();close();return;}
+    if(e.key==='Tab'){
+      var f=focusable();if(!f.length)return;
+      var first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+    }
+  });
+  email.addEventListener('input',function(){if(email.getAttribute('aria-invalid'))setError('');});
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var hp=form.elements['company'];
+    if(hp&&hp.value){showOk();return;} // honeypot
+    var v=email.value.trim();
+    if(!v){setError('Please enter your email.');email.focus();return;}
+    if(!emailRe.test(v)){setError('Enter a valid email address.');email.focus();return;}
+    showOk();
+    say('Welcome to Nival');
+  });
+  function showOk(){
+    form.reset();setError('');
+    form.hidden=true;
+    if(ok){ok.hidden=false;var h=ok.querySelector('h3');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}}
+    document.querySelectorAll('.join .join-label').forEach(function(l){l.textContent='Joined';});
+  }
+
+  window.NIVAL=window.NIVAL||{};
+  window.NIVAL.openJoin=open;
 })();
 
 /* ============================================================
