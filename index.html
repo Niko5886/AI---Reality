@@ -42,6 +42,7 @@ html,body{
 button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
 a{color:inherit;text-decoration:none;cursor:pointer}
 img{-webkit-user-drag:none;user-select:none}
+[hidden]{display:none!important}
 
 /* ---------- VIEWPORT + GRAIN ---------- */
 .viewport{
@@ -624,6 +625,52 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 .tl-item.is-current .tl-body h4:after{content:"· now";color:var(--blue);font-size:14px;margin-left:8px}
 .tl-body p{margin:6px 0 0;max-width:560px;font-size:15px;line-height:1.4;color:#77899b}
 
+/* ---------- Contact view ---------- */
+.contact-cols{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,4vw,56px);align-items:start}
+@container (max-width:820px){.contact-cols{grid-template-columns:1fr}}
+.badge{display:inline-flex;align-items:center;gap:9px;padding:9px 15px;border-radius:22px;font-size:14px;color:#3f5164;
+  border:1px solid rgba(255,255,255,.55);background:rgba(255,255,255,.5);
+  box-shadow:inset 0 0 12px rgba(255,255,255,.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.badge-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.18);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(34,197,94,.06)}}
+.contact-note{margin:24px 0 8px;font-size:15px;color:#77899b}
+.contact-email{display:inline-block;font-size:20px;color:var(--ink);border-bottom:1px solid rgba(17,105,220,.35);padding-bottom:2px;transition:.2s}
+.contact-email:hover{color:var(--blue);border-color:var(--blue)}
+.contact-socials{display:flex;gap:14px;margin-top:26px}
+
+.contact-form{display:grid;gap:16px;padding:26px 24px;border-radius:24px;
+  border:1px solid rgba(255,255,255,.6);
+  background:linear-gradient(135deg,rgba(255,255,255,.62),rgba(238,246,253,.48));
+  box-shadow:inset 0 0 22px rgba(255,255,255,.4),0 12px 30px rgba(65,94,123,.1);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.field{display:grid;gap:6px}
+.field label{font-size:14px;color:#5e7082}
+.field input,.field textarea{font:inherit;font-size:15px;color:var(--ink);
+  padding:12px 14px;border-radius:14px;border:1px solid rgba(120,140,160,.28);
+  background:rgba(255,255,255,.7);transition:border-color .2s,box-shadow .2s;resize:vertical}
+.field input::placeholder,.field textarea::placeholder{color:#9aa9b8}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(17,105,220,.15)}
+.field input[aria-invalid="true"],.field textarea[aria-invalid="true"]{border-color:#e0575b;box-shadow:0 0 0 3px rgba(224,87,91,.14)}
+.field-err{font-size:12.5px;color:#d64b50;display:none}
+.field-err.show{display:block}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cf-submit{justify-self:start;margin-top:4px;height:48px;padding:0 26px;border-radius:24px;font-size:16px;
+  color:#fff;background:linear-gradient(135deg,#0b2b50,#06192f);box-shadow:0 8px 20px rgba(8,26,46,.22);transition:.2s}
+.cf-submit:hover{transform:translateY(-1px)}
+
+.contact-success{display:grid;justify-items:start;gap:8px;padding:34px 28px;border-radius:24px;
+  border:1px solid rgba(17,105,220,.3);
+  background:linear-gradient(135deg,rgba(255,255,255,.7),rgba(233,244,253,.55));
+  box-shadow:inset 0 0 24px rgba(255,255,255,.5),0 14px 34px rgba(17,105,220,.16);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.cs-check{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1a7bef,#1169dc);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(17,105,220,.3)}
+.cs-check svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.contact-success h3{margin:6px 0 0;font-size:24px;font-weight:500;outline:none}
+.contact-success p{margin:0;max-width:360px;font-size:15px;color:#77899b}
+.cs-again{margin-top:10px;height:44px;padding:0 22px;border-radius:22px;font-size:15px;color:var(--ink);
+  border:1px solid rgba(255,255,255,.6);background:rgba(246,250,255,.6);box-shadow:inset 0 0 10px rgba(255,255,255,.5);transition:.2s}
+.cs-again:hover{background:#fff}
+
 /* ============================================================
    §7  ENTRANCE ANIMATION — pre-state (removed once timeline ends)
    ============================================================ */
@@ -1059,7 +1106,55 @@ html.intro .avatar{transform:scale(.9)}
         <p class="view-eyebrow"><span class="verified" aria-hidden="true"><svg viewBox="0 0 11 11"><path d="M2.2 6.2 4.7 8.5 9.8 3"/></svg></span>Say hello</p>
         <h2 class="view-title" id="contact-h" tabindex="-1">Contact</h2>
         <p class="view-sub">Tell us about the presence you want to build. We reply within one working day.</p>
-        <div class="view-body" data-body="contact"></div>
+        <div class="view-body" data-body="contact">
+          <div class="contact-cols">
+            <div class="contact-aside">
+              <span class="badge"><span class="badge-dot" aria-hidden="true"></span>Replies within 1 working day</span>
+              <p class="contact-note">Prefer email? Reach the studio directly.</p>
+              <a class="contact-email" href="mailto:hello@nival.studio">hello@nival.studio</a>
+              <div class="contact-socials">
+                <button class="social" data-name="Instagram" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.4-3.1a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/></svg>
+                </button>
+                <button class="social" data-name="Facebook" aria-label="Facebook">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-2.8h-2.8V9.4c0-.8.2-1.4 1.4-1.4h1.5V5.5c-.9-.1-1.8-.2-2.8-.2-2.2 0-3.7 1.3-3.7 3.8v2.1H9.3V14h2.5v7z"/></svg>
+                </button>
+                <button class="social" data-name="Telegram" aria-label="Telegram">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 4.3 2.9 11.6c-1 .4-1 1.8.1 2.1l4.8 1.5 1.8 5.8c.2.7 1.1.9 1.6.3l2.7-2.7 4.8 3.5c.6.4 1.5.1 1.7-.7l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.7 14.7l8.2-5.1c.4-.2.8.3.4.6l-6.7 6.1c-.2.2-.4.5-.4.8l-.2 2.4z"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="contact-panel">
+              <form class="contact-form" novalidate>
+                <div class="field">
+                  <label for="cf-name">Name</label>
+                  <input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Your name" required>
+                  <span class="field-err" id="err-name" data-err-for="cf-name"></span>
+                </div>
+                <div class="field">
+                  <label for="cf-email">Email</label>
+                  <input id="cf-email" name="email" type="email" autocomplete="email" placeholder="you@studio.com" required>
+                  <span class="field-err" id="err-email" data-err-for="cf-email"></span>
+                </div>
+                <div class="field">
+                  <label for="cf-msg">Message</label>
+                  <textarea id="cf-msg" name="message" rows="4" placeholder="Tell us about the presence you want to build…" required></textarea>
+                  <span class="field-err" id="err-msg" data-err-for="cf-msg"></span>
+                </div>
+                <div class="hp" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+                <button type="submit" class="cf-submit">Send message</button>
+              </form>
+
+              <div class="contact-success" hidden>
+                <span class="cs-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12.5 10 18 20 6"/></svg></span>
+                <h3>Message sent</h3>
+                <p>Thanks — we'll get back to you within one working day.</p>
+                <button type="button" class="cs-again">Send another</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1512,6 +1607,76 @@ html.intro .avatar{transform:scale(.9)}
   });
   // if deep-linked straight to #about on load
   if(view.classList.contains('is-active'))run();
+})();
+
+/* ============================================================
+   CONTACT — accessible validation + success state + honeypot
+   ============================================================ */
+(function(){
+  var view=document.querySelector('[data-view="contact"]');
+  if(!view)return;
+  var form=view.querySelector('.contact-form');
+  var success=view.querySelector('.contact-success');
+  if(!form)return;
+  var say=function(m){if(window.NIVAL&&window.NIVAL.say)window.NIVAL.say(m);};
+  var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var fields=['name','email','message'];
+
+  function errEl(input){var f=input.closest('.field');return f?f.querySelector('.field-err'):null;}
+  function setError(input,msg){
+    var e=errEl(input);
+    if(msg){
+      input.setAttribute('aria-invalid','true');
+      if(e){e.textContent=msg;e.classList.add('show');input.setAttribute('aria-describedby',e.id);}
+    }else{
+      input.removeAttribute('aria-invalid');
+      input.removeAttribute('aria-describedby');
+      if(e){e.textContent='';e.classList.remove('show');}
+    }
+  }
+  function validate(){
+    var first=null;
+    var name=form.elements['name'],email=form.elements['email'],msg=form.elements['message'];
+    if(!name.value.trim()){setError(name,'Please enter your name.');first=first||name;}else setError(name,'');
+    if(!email.value.trim()){setError(email,'Please enter your email.');first=first||email;}
+    else if(!emailRe.test(email.value.trim())){setError(email,'Enter a valid email address.');first=first||email;}
+    else setError(email,'');
+    if(!msg.value.trim()){setError(msg,'Tell us a little about your project.');first=first||msg;}else setError(msg,'');
+    if(first)first.focus();
+    return !first;
+  }
+
+  fields.forEach(function(n){
+    var el=form.elements[n];
+    if(el)el.addEventListener('input',function(){if(el.getAttribute('aria-invalid'))setError(el,'');});
+  });
+
+  function showSuccess(){
+    form.reset();
+    fields.forEach(function(n){var el=form.elements[n];if(el)setError(el,'');});
+    form.hidden=true;
+    if(success){
+      success.hidden=false;
+      var h=success.querySelector('h3');
+      if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}
+    }
+  }
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var hp=form.elements['company'];
+    if(hp && hp.value){showSuccess();return;} // bot filled the honeypot
+    if(!validate())return;
+    showSuccess();
+    say('Message sent');
+  });
+
+  var again=view.querySelector('.cs-again');
+  if(again)again.addEventListener('click',function(){
+    if(success)success.hidden=true;
+    form.hidden=false;
+    var n=form.elements['name'];if(n)n.focus();
+  });
 })();
 
 /* ============================================================
