@@ -287,18 +287,6 @@ img{-webkit-user-drag:none;user-select:none}
 .chain path{fill:var(--ink)}
 .hl-rv{display:block}
 
-.features{
-  position:absolute;
-  right:calc(var(--fx) + 44px);
-  top:157px;
-  width:190px;
-  display:grid;gap:11px;
-  z-index:10;
-  font-size:20px;line-height:1.1;
-  text-align:right;
-}
-.feature{display:flex;justify-content:flex-end;gap:18px;white-space:nowrap}
-.feature b{font-weight:400}
 
 .verified{
   width:19px;height:19px;flex:0 0 19px;
@@ -704,7 +692,6 @@ html.intro .brand,
 html.intro .menu,
 html.intro .nav,
 html.intro .join,
-html.intro .feature,
 html.intro .hero,
 html.intro .ghost,
 html.intro .robo-o-avatar,
@@ -744,8 +731,6 @@ html.intro .avatar{transform:scale(.9)}
 .is-mobile .headline-line2{margin-top:14px;gap:14px;white-space:normal}
 .is-mobile .chain{width:100px;height:32px;flex:0 0 100px}
 .is-mobile .headline-line2>span{display:block;width:calc(100% - 116px)}
-.is-mobile .features{right:calc(var(--fx) + 24px);top:299px;width:194px;font-size:16px;gap:8px}
-.is-mobile .feature{gap:13px}
 .is-mobile .ghost-one{left:calc(var(--fx) + 13px);top:621px;font-size:142px}
 .is-mobile .ghost-tag{left:calc(var(--fx) + 16px);top:748px;width:344px;justify-content:flex-end;font-size:21px;letter-spacing:.48em;gap:12px}
 .is-mobile .ghost-tag-rule{flex-basis:22px;width:22px}
@@ -786,7 +771,6 @@ html.intro .avatar{transform:scale(.9)}
     grid-template-areas:
       "head head"
       "title title"
-      ". features"
       "art art"
       "mat mat"
       "gal gal"
@@ -821,8 +805,6 @@ html.intro .avatar{transform:scale(.9)}
 
   .is-phone .verified{width:17px;height:17px;flex:0 0 17px}
 
-  .is-phone .features{grid-area:features;font-size:13px;gap:7px;justify-self:end;align-self:start}
-  .is-phone .feature{gap:12px}
 
   /* --- art layer: hero + ghosts + robo-O share one grid cell, scaled off --gf --- */
   .is-phone .hero,
@@ -910,13 +892,6 @@ html.intro .avatar{transform:scale(.9)}
         <span data-i18n="hl2">merge with the virtual</span>
       </span>
     </h1>
-
-    <!-- ===== FEATURES ===== -->
-    <div class="features">
-      <div class="feature"><span data-i18n="feat_web">Web based</span><b>/01</b></div>
-      <div class="feature"><span data-i18n="feat_collab">Collaborative</span><b>/02</b></div>
-      <div class="feature"><span data-i18n="feat_rt">Real-time</span><b>/03</b></div>
-    </div>
 
     <!-- ===== GHOST TYPOGRAPHY + ROBO-O ===== -->
     <div class="ghost ghost-one" aria-hidden="true">NIK<i class="o-gap"></i></div>
@@ -1231,7 +1206,6 @@ html.intro .avatar{transform:scale(.9)}
     nav_home:"Начало",nav_pricing:"Цени",nav_about:"За нас",nav_contact:"Контакт",join:"Присъедини се",close:"Затвори",
     /* home */
     hl1:"Киберпространство —",hl2:"слято с виртуалното",
-    feat_web:"Уеб базирано",feat_collab:"Съвместно",feat_rt:"В реално време",
     material:"Адаптивни<br>материали",
     /* pricing */
     pr_eyebrow:"Планове",pr_title:"Цени",
@@ -1977,9 +1951,6 @@ html.intro .avatar{transform:scale(.9)}
   run(q('.hero'),
     [{opacity:0,transform:'translateY('+px(22)+') scale(.99)'},{opacity:1,transform:'none'}],
     1.05,.48,0,TYPE);
-
-  // 4 — features
-  run(q('.feature'),fade('translateX('+px(12)+')'),.55,.52,.07,SOFT);
 
   // 5 — ghosts + robo-O
   run(q('.ghost'),[{opacity:0},{opacity:1}],.90,.62,.09,SOFT);
