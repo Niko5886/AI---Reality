@@ -501,6 +501,32 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(17,105,220,.55);outl
 .nav a:focus-visible,.avatar:focus-visible,.social:focus-visible,.menu-panel a:focus-visible{outline-offset:3px}
 
 /* ============================================================
+   VIEW ROUTER — full-screen view-swap SPA (Home / Pricing / About / Contact)
+   ============================================================ */
+.sr-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.views{position:absolute;inset:0;z-index:5}
+.view{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none}
+.view.is-active{opacity:1;visibility:visible;pointer-events:auto}
+/* fallback cross-fade only when the View Transitions API is unavailable */
+html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.5s}
+
+/* panel views (Pricing / About / Contact) */
+.view-panel{
+  display:grid;align-content:start;justify-items:start;
+  padding:132px calc(var(--fx) + 46px) 60px;
+  overflow:auto;
+}
+.view-inner{width:100%;max-width:1040px}
+.view-eyebrow{display:flex;align-items:center;gap:9px;margin:0 0 12px;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--blue)}
+.view-eyebrow .verified{width:19px;height:19px;flex:0 0 19px;margin:0}
+.view-title{margin:0;font-size:clamp(40px,5vw,66px);line-height:1.02;letter-spacing:-.02em;font-weight:400;outline:none}
+.view-title:focus-visible{outline:2px solid rgba(17,105,220,.55);outline-offset:6px;border-radius:8px}
+.view-sub{margin:16px 0 0;max-width:560px;font-size:19px;line-height:1.42;color:#5e7082}
+.view-body{margin-top:38px;width:100%}
+
+/* ============================================================
    §7  ENTRANCE ANIMATION — pre-state (removed once timeline ends)
    ============================================================ */
 html.intro .headline-line{clip-path:inset(0 -.12em 100% -.12em)}
@@ -591,6 +617,10 @@ html.intro .avatar{transform:scale(.9)}
     min-height:100svh;transform:none;background:transparent;
     --gf:clamp(56px,16.5vw,84px);
     --gm:clamp(112px,33vw,186px);
+    padding:0 clamp(16px,5vw,24px) clamp(22px,6vw,32px);
+  }
+  /* Home route → the cinematic grid; panel routes → natural flow */
+  .stage.is-phone[data-route="home"]{
     display:grid;
     grid-template-columns:1fr auto;
     grid-template-areas:
@@ -605,10 +635,15 @@ html.intro .avatar{transform:scale(.9)}
     align-content:start;
     row-gap:clamp(14px,4vw,22px);
     column-gap:16px;
-    padding:0 clamp(16px,5vw,24px) clamp(22px,6vw,32px);
   }
+  .stage.is-phone:not([data-route="home"]){display:block}
   .stage.is-phone:before{display:none}
-  .stage.is-phone>*{position:static;inset:auto;margin:0}
+  .stage.is-phone>*,.stage.is-phone .view>*{position:static;inset:auto;margin:0}
+
+  /* view router on phone: contents-promote so home children join the stage grid */
+  .is-phone .views{display:contents}
+  .is-phone .view{display:none}
+  .is-phone .view.is-active{display:contents}
 
   .is-phone .header{grid-area:head;position:relative;height:auto;display:flex;align-items:center;justify-content:space-between;padding:clamp(14px,4vw,20px) 0 0}
   .is-phone .brand{position:static;width:clamp(56px,16vw,68px);height:auto;aspect-ratio:58/21}
@@ -670,6 +705,11 @@ html.intro .avatar{transform:scale(.9)}
   .is-phone .socials{grid-area:soc;display:flex;gap:clamp(12px,4vw,17px);left:auto;bottom:auto}
   .is-phone .social{width:44px;height:44px}
   .is-phone .toast{position:absolute;left:50%;top:auto;bottom:clamp(18px,5vw,26px)}
+
+  /* phone panel views (Pricing / About / Contact) flow under the header */
+  .is-phone .view-panel .view-inner{margin-top:clamp(16px,5vw,22px)}
+  .is-phone .view-title{font-size:clamp(30px,9vw,42px)}
+  .is-phone .view-sub{font-size:clamp(15px,4.2vw,17px)}
 }
 </style>
 <script>
@@ -688,23 +728,26 @@ html.intro .avatar{transform:scale(.9)}
 
     <!-- ===== HEADER ===== -->
     <header class="header">
-      <a class="brand" href="#home" aria-label="Nival home">
+      <a class="brand" href="#home" data-route="home" aria-label="Nival home">
         <svg viewBox="0 0 58 21" aria-hidden="true"><path d="M0 0h7v21H0zM21 0h7v21h-7zM0 0h12l16 21H16zM30 0h8l12 21h-8zM51 0h7v21h-7z"/></svg>
       </a>
       <button class="menu" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="nav" aria-label="Primary">
-        <a href="#home" class="active">Home page</a>
-        <a href="#">Pricing</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="#home" class="active" data-route="home">Home page</a>
+        <a href="#pricing" data-route="pricing">Pricing</a>
+        <a href="#about" data-route="about">About</a>
+        <a href="#contact" data-route="contact">Contact</a>
       </nav>
       <button class="join" aria-label="Join us">
         <span class="join-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4.5 21c.4-5 3.1-7.3 7.5-7.3s7.1 2.3 7.5 7.3"/></svg></span>
         <span class="join-label">Join us</span>
       </button>
     </header>
+
+    <div class="views">
+    <section class="view is-active" data-view="home" aria-labelledby="home">
 
     <!-- ===== HEADLINE ===== -->
     <h1 class="headline" id="home">
@@ -795,15 +838,50 @@ html.intro .avatar{transform:scale(.9)}
       </button>
     </div>
 
+    </section><!-- /home -->
+
+    <!-- ===== PRICING VIEW ===== -->
+    <section class="view view-panel" data-view="pricing" aria-labelledby="pricing-h" role="region">
+      <div class="view-inner">
+        <p class="view-eyebrow"><span class="verified" aria-hidden="true"><svg viewBox="0 0 11 11"><path d="M2.2 6.2 4.7 8.5 9.8 3"/></svg></span>Plans</p>
+        <h2 class="view-title" id="pricing-h" tabindex="-1">Pricing</h2>
+        <p class="view-sub">Choose the identity plan that fits your presence. Upgrade, downgrade or cancel anytime.</p>
+        <div class="view-body" data-body="pricing"></div>
+      </div>
+    </section>
+
+    <!-- ===== ABOUT VIEW ===== -->
+    <section class="view view-panel" data-view="about" aria-labelledby="about-h" role="region">
+      <div class="view-inner">
+        <p class="view-eyebrow"><span class="verified" aria-hidden="true"><svg viewBox="0 0 11 11"><path d="M2.2 6.2 4.7 8.5 9.8 3"/></svg></span>Studio</p>
+        <h2 class="view-title" id="about-h" tabindex="-1">About Nival</h2>
+        <p class="view-sub">A studio crafting digital identities for a new kind of presence — where reality merges with the virtual.</p>
+        <div class="view-body" data-body="about"></div>
+      </div>
+    </section>
+
+    <!-- ===== CONTACT VIEW ===== -->
+    <section class="view view-panel" data-view="contact" aria-labelledby="contact-h" role="region">
+      <div class="view-inner">
+        <p class="view-eyebrow"><span class="verified" aria-hidden="true"><svg viewBox="0 0 11 11"><path d="M2.2 6.2 4.7 8.5 9.8 3"/></svg></span>Say hello</p>
+        <h2 class="view-title" id="contact-h" tabindex="-1">Contact</h2>
+        <p class="view-sub">Tell us about the presence you want to build. We reply within one working day.</p>
+        <div class="view-body" data-body="contact"></div>
+      </div>
+    </section>
+
+    </div><!-- /views -->
+
     <!-- ===== TOAST ===== -->
     <div class="toast" role="status" aria-live="polite"></div>
+    <div class="sr-live" aria-live="polite"></div>
 
     <!-- ===== MENU PANEL (compact) ===== -->
     <nav class="menu-panel" aria-hidden="true" aria-label="Menu">
-      <a href="#home" class="active">Home page</a>
-      <a href="#">Pricing</a>
-      <a href="#">About</a>
-      <a href="#">Contact</a>
+      <a href="#home" class="active" data-route="home">Home page</a>
+      <a href="#pricing" data-route="pricing">Pricing</a>
+      <a href="#about" data-route="about">About</a>
+      <a href="#contact" data-route="contact">Contact</a>
       <button class="menu-join join" aria-label="Join us">
         <span class="join-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4.5 21c.4-5 3.1-7.3 7.5-7.3s7.1 2.3 7.5 7.3"/></svg></span>
         <span class="join-label">Join us</span>
@@ -987,17 +1065,7 @@ html.intro .avatar{transform:scale(.9)}
     closeMenu(true);
   },true);
 
-  /* ---- nav links (sync active across BOTH menus) ---- */
-  var navLinks=Array.prototype.slice.call(document.querySelectorAll('.nav a,.menu-panel a'));
-  navLinks.forEach(function(link){
-    link.addEventListener('click',function(e){
-      e.preventDefault();
-      var label=link.textContent.trim();
-      navLinks.forEach(function(l){l.classList.toggle('active',l.textContent.trim()===label);});
-      closeMenu(true);
-      say(label);
-    });
-  });
+  /* nav-link routing is owned by the view router (below); menu just closes there */
 
   /* ---- join buttons (both header + menu-panel) ---- */
   var joined=false;
@@ -1048,6 +1116,91 @@ html.intro .avatar{transform:scale(.9)}
   document.querySelectorAll('.social').forEach(function(btn){
     btn.addEventListener('click',function(){say((btn.getAttribute('data-name')||'Social')+' selected');});
   });
+
+  /* expose shared helpers for the view router */
+  window.NIVAL=window.NIVAL||{};
+  window.NIVAL.say=say;
+  window.NIVAL.closeMenu=closeMenu;
+})();
+
+/* ============================================================
+   VIEW ROUTER — hash routing + View Transitions API + a11y
+   ============================================================ */
+(function(){
+  var stage=document.querySelector('.stage');
+  var views=Array.prototype.slice.call(document.querySelectorAll('.view'));
+  var live=document.querySelector('.sr-live');
+  var api=window.NIVAL=window.NIVAL||{};
+  var routes={home:'Home page',pricing:'Pricing',about:'About',contact:'Contact'};
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var current=null, booted=false;
+
+  if(!document.startViewTransition){document.documentElement.classList.add('no-vt');}
+
+  function apply(id){
+    views.forEach(function(v){v.classList.toggle('is-active',v.getAttribute('data-view')===id);});
+  }
+  function syncNav(id){
+    document.querySelectorAll('[data-route]').forEach(function(el){
+      if(el.classList.contains('brand'))return; // logo is not a nav-active target
+      el.classList.toggle('active',el.getAttribute('data-route')===id);
+    });
+  }
+  function focusView(id){
+    var v=views.filter(function(x){return x.getAttribute('data-view')===id;})[0];
+    if(!v)return;
+    var h=v.querySelector('.view-title,.headline,h1,h2');
+    if(h){ if(!h.hasAttribute('tabindex'))h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+  }
+  function announce(id){ if(live)live.textContent=routes[id]+' — view'; }
+
+  function commit(id,doFocus){
+    apply(id);
+    syncNav(id);
+    stage.setAttribute('data-route',id);
+    if(doFocus)focusView(id);
+    announce(id);
+    try{window.scrollTo(0,0);}catch(e){}
+  }
+
+  function navigate(id,opts){
+    opts=opts||{};
+    if(!routes[id])id='home';
+    if(id===current){ if(api.closeMenu)api.closeMenu(true); return; }
+    var doFocus=opts.focus!==false;
+    var run=function(){commit(id,doFocus);};
+    if(document.startViewTransition && !reduce && booted){
+      document.startViewTransition(run);
+    }else{
+      run();
+    }
+    current=id;
+    if(opts.push!==false){ history.pushState({view:id},'','#'+id); }
+    if(api.closeMenu)api.closeMenu(true);
+  }
+
+  /* nav links (both menus) + brand */
+  document.querySelectorAll('[data-route]').forEach(function(el){
+    el.addEventListener('click',function(e){
+      e.preventDefault();
+      navigate(el.getAttribute('data-route'));
+    });
+  });
+
+  /* browser back / forward */
+  addEventListener('popstate',function(){
+    navigate((location.hash||'#home').slice(1),{push:false});
+  });
+
+  /* initial route (deep-link aware; no transition / no focus on first paint) */
+  var initial=(location.hash||'#home').slice(1);
+  if(!routes[initial])initial='home';
+  commit(initial,false);
+  current=initial;
+  history.replaceState({view:initial},'','#'+initial);
+  booted=true;
+
+  api.navigate=navigate;
 })();
 
 /* ============================================================
