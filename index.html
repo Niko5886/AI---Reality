@@ -180,7 +180,9 @@ img{-webkit-user-drag:none;user-select:none}
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
   z-index:20;
+  transition:background .2s,box-shadow .2s;
 }
+.join:hover{background:rgba(255,255,255,.6);box-shadow:0 0 22px rgba(255,255,255,.6),inset 0 0 10px rgba(255,255,255,.5)}
 .join-icon{
   width:42px;height:42px;
   flex:0 0 42px;
@@ -276,7 +278,7 @@ img{-webkit-user-drag:none;user-select:none}
   top:311px;
   z-index:12;
   display:flex;align-items:flex-start;
-  color:#77899b;
+  color:#5e7082;
 }
 .verified{
   width:19px;height:19px;flex:0 0 19px;
@@ -287,7 +289,7 @@ img{-webkit-user-drag:none;user-select:none}
 }
 .verified svg{width:11px;height:11px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .creator-copy{font-size:16px;line-height:1.25}
-.series{display:block;margin-top:9px;color:#8496a8}
+.series{display:block;margin-top:9px;color:#5e7082}
 
 /* ============================================================
    §4  GLASS CARD
@@ -563,6 +565,8 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 .pricing-save{font-size:14px;color:var(--blue);font-weight:500}
 
 .pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(236px,1fr));gap:20px;margin-top:22px;align-items:start}
+/* keep the featured plan centred: lock 3 columns once there's room */
+@container (min-width:760px){.pricing-grid{grid-template-columns:repeat(3,1fr)}}
 .tier{
   position:relative;display:flex;flex-direction:column;padding:24px 22px 22px;
   border:1px solid rgba(255,255,255,.65);border-radius:24px;
@@ -596,12 +600,12 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 }
 .tier-tag{position:absolute;top:-11px;left:24px;padding:5px 13px;border-radius:20px;font-size:12px;letter-spacing:.03em;color:#fff;background:linear-gradient(135deg,#1a7bef,#1169dc);box-shadow:0 6px 16px rgba(17,105,220,.35)}
 .tier-name{margin:0;font-size:22px;font-weight:500}
-.tier-desc{margin:6px 0 0;font-size:14px;line-height:1.35;color:#77899b;min-height:34px}
+.tier-desc{margin:6px 0 0;font-size:14px;line-height:1.35;color:#5e7082;min-height:34px}
 .tier-price{margin:14px 0 0;display:flex;align-items:baseline;gap:2px;color:var(--ink)}
 .tier-price .cur{font-size:22px;font-weight:500}
 .tier-price .amt{font-size:42px;font-weight:500;line-height:1;letter-spacing:-.02em}
-.tier-price .per{font-size:16px;color:#77899b;margin-left:4px}
-.tier-bill{margin:6px 0 0;font-size:13px;color:#8496a8}
+.tier-price .per{font-size:16px;color:#5e7082;margin-left:4px}
+.tier-bill{margin:6px 0 0;font-size:13px;color:#5e7082}
 .tier-cta{
   margin-top:18px;height:46px;border-radius:24px;font-size:16px;
   border:1px solid rgba(255,255,255,.5);
@@ -633,7 +637,7 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
 .stat-num{display:block;font-size:clamp(30px,3vw,42px);font-weight:500;letter-spacing:-.02em;line-height:1;color:var(--ink)}
-.stat-label{display:block;margin-top:7px;font-size:13.5px;color:#77899b}
+.stat-label{display:block;margin-top:7px;font-size:13.5px;color:#5e7082}
 
 .timeline{list-style:none;margin:0;padding:0}
 .tl-item{position:relative;display:grid;grid-template-columns:40px 1fr;gap:18px;padding:0 0 26px}
@@ -644,7 +648,7 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 .tl-item.is-current .tl-no{background:linear-gradient(135deg,#0b2b50,#06192f);color:#fff;border-color:transparent}
 .tl-body h4{margin:8px 0 0;font-size:19px;font-weight:500}
 .tl-item.is-current .tl-body h4:after{content:"· now";color:var(--blue);font-size:14px;margin-left:8px}
-.tl-body p{margin:6px 0 0;max-width:560px;font-size:15px;line-height:1.4;color:#77899b}
+.tl-body p{margin:6px 0 0;max-width:560px;font-size:15px;line-height:1.4;color:#5e7082}
 
 /* ---------- Contact view ---------- */
 .contact-cols{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(28px,4vw,56px);align-items:start}
@@ -654,7 +658,7 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
   box-shadow:inset 0 0 12px rgba(255,255,255,.4);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .badge-dot{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px rgba(34,197,94,.18);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{50%{box-shadow:0 0 0 8px rgba(34,197,94,.06)}}
-.contact-note{margin:24px 0 8px;font-size:15px;color:#77899b}
+.contact-note{margin:24px 0 8px;font-size:15px;color:#5e7082}
 .contact-email{display:inline-block;font-size:20px;color:var(--ink);border-bottom:1px solid rgba(17,105,220,.35);padding-bottom:2px;transition:.2s}
 .contact-email:hover{color:var(--blue);border-color:var(--blue)}
 .contact-socials{display:flex;gap:14px;margin-top:26px}
@@ -687,7 +691,7 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 .cs-check{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#1a7bef,#1169dc);display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(17,105,220,.3)}
 .cs-check svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .contact-success h3{margin:6px 0 0;font-size:24px;font-weight:500;outline:none}
-.contact-success p{margin:0;max-width:360px;font-size:15px;color:#77899b}
+.contact-success p{margin:0;max-width:360px;font-size:15px;color:#5e7082}
 .cs-again{margin-top:10px;height:44px;padding:0 22px;border-radius:22px;font-size:15px;color:var(--ink);
   border:1px solid rgba(255,255,255,.6);background:rgba(246,250,255,.6);box-shadow:inset 0 0 10px rgba(255,255,255,.5);transition:.2s}
 .cs-again:hover{background:#fff}
@@ -713,7 +717,7 @@ html.no-vt .view{transition:opacity .45s ease,visibility .45s ease}
 .join-form .cf-submit{justify-self:stretch;justify-content:center;text-align:center}
 .join-ok{display:grid;justify-items:start;gap:8px;margin-top:14px}
 .join-ok h3{margin:6px 0 0;font-size:22px;font-weight:500;outline:none}
-.join-ok p{margin:0;max-width:340px;font-size:15px;color:#77899b}
+.join-ok p{margin:0;max-width:340px;font-size:15px;color:#5e7082}
 
 /* ============================================================
    §7  ENTRANCE ANIMATION — pre-state (removed once timeline ends)
@@ -759,7 +763,7 @@ html.intro .avatar{transform:scale(.9)}
 .is-mobile .menu span{width:41px}
 .is-mobile .join{right:calc(var(--fx) + 16px);top:23px;width:120px}
 .is-mobile .join-label{font-size:13px;margin-left:7px}
-.is-mobile .headline{left:calc(var(--fx) + 24px);top:112px;width:calc(100% - 48px);font-size:60px;line-height:1.02;letter-spacing:-1.8px;word-spacing:1px}
+.is-mobile .headline{left:calc(var(--fx) + 24px);top:112px;width:calc(100% - 48px);font-size:clamp(46px,7vw,60px);line-height:1.02;letter-spacing:-1.8px;word-spacing:1px}
 .is-mobile .headline-line:first-child{letter-spacing:-2px}
 .is-mobile .headline-line2{margin-top:14px;gap:14px;white-space:normal}
 .is-mobile .chain{width:100px;height:32px;flex:0 0 100px}
@@ -920,7 +924,7 @@ html.intro .avatar{transform:scale(.9)}
       <a class="brand" href="#home" data-route="home" aria-label="Nival home">
         <svg viewBox="0 0 58 21" aria-hidden="true"><path d="M0 0h7v21H0zM21 0h7v21h-7zM0 0h12l16 21H16zM30 0h8l12 21h-8zM51 0h7v21h-7z"/></svg>
       </a>
-      <button class="menu" aria-label="Open menu" aria-expanded="false">
+      <button type="button" class="menu" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="nav" aria-label="Primary">
@@ -929,17 +933,17 @@ html.intro .avatar{transform:scale(.9)}
         <a href="#about" data-route="about">About</a>
         <a href="#contact" data-route="contact">Contact</a>
       </nav>
-      <button class="join" aria-label="Join us" aria-haspopup="dialog">
+      <button type="button" class="join" aria-label="Join us" aria-haspopup="dialog">
         <span class="join-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4.5 21c.4-5 3.1-7.3 7.5-7.3s7.1 2.3 7.5 7.3"/></svg></span>
         <span class="join-label">Join us</span>
       </button>
     </header>
 
     <div class="views">
-    <section class="view is-active" data-view="home" aria-labelledby="home">
+    <section class="view is-active" data-view="home" aria-labelledby="home-heading">
 
     <!-- ===== HEADLINE ===== -->
-    <h1 class="headline" id="home">
+    <h1 class="headline" id="home-heading">
       <span class="headline-line">Cyberspace — reality</span>
       <span class="headline-line headline-line2">
         <svg class="chain" viewBox="0 0 151 48" aria-hidden="true"><path fill-rule="evenodd" d="M2 24a25 22 0 1 0 50 0a25 22 0 1 0 -50 0ZM12 24a15 13 0 1 0 30 0a15 13 0 1 0 -30 0ZM50.5 24a25 22 0 1 0 50 0a25 22 0 1 0 -50 0ZM60.5 24a15 13 0 1 0 30 0a15 13 0 1 0 -30 0ZM99 24a25 22 0 1 0 50 0a25 22 0 1 0 -50 0ZM109 24a15 13 0 1 0 30 0a15 13 0 1 0 -30 0Z"/></svg>
@@ -964,17 +968,17 @@ html.intro .avatar{transform:scale(.9)}
     <div class="glass-card">
       <div class="card-top">
         <div class="count"><strong>+105</strong><small>kinds of avatars</small></div>
-        <button class="eye" aria-label="Preview live identity">
+        <button type="button" class="eye" aria-label="Preview live identity">
           <svg viewBox="0 0 32 22" aria-hidden="true"><path d="M1 11Q16 1 31 11Q16 21 1 11Z"/><circle cx="16" cy="11" r="3.5"/></svg>
         </button>
       </div>
       <p class="card-copy">Explore digital identities, crafted<br>for a new kind of presence.</p>
       <div class="card-bottom">
         <div class="start">Start<br><strong>creating</strong></div>
-        <button class="shuffle" aria-label="Shuffle identity">
+        <button type="button" class="shuffle" aria-label="Shuffle identity">
           <svg viewBox="0 0 30 30" aria-hidden="true"><path d="M3 8h6l12 14h6M22 5l5 3-5 3M3 22h6l4-5M18 12l3-4h6M22 25l5-3-5-3"/></svg>
         </button>
-        <button class="play" aria-label="Activate identity" aria-pressed="false">
+        <button type="button" class="play" aria-label="Activate identity" aria-pressed="false">
           <svg viewBox="0 0 24 26" aria-hidden="true"><path d="m3 2 19 12L3 26z"/></svg>
         </button>
       </div>
@@ -999,7 +1003,7 @@ html.intro .avatar{transform:scale(.9)}
       <div class="material-pill">
         <div class="material-thumb"><img data-material aria-hidden="true" alt=""></div>
         <div class="material-copy">Adaptive<br>materials</div>
-        <button class="material-next" aria-label="Next material">
+        <button type="button" class="material-next" aria-label="Next material">
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 8 24 25M12 25h12V13"/></svg>
         </button>
       </div>
@@ -1007,22 +1011,22 @@ html.intro .avatar{transform:scale(.9)}
 
     <!-- ===== GALLERY ===== -->
     <div class="gallery">
-      <button class="avatar active" style="--iw:112.3%;--il:-5.84%;--it:-3.65%;background:#1e3048" data-hue="2" data-sat="1.2" aria-label="Identity 01"><img data-av1 alt="Identity 01"></button>
-      <button class="avatar" style="--iw:111.5%;--il:-8.82%;--it:-4.41%" data-hue="0" data-sat=".42" aria-label="Identity 02"><img data-av2 alt="Identity 02"></button>
-      <button class="avatar" style="--iw:113.1%;--il:-4.35%;--it:-0.72%" data-hue="6" data-sat="1.3" aria-label="Identity 03"><img data-av3 alt="Identity 03"></button>
-      <button class="avatar" style="--iw:108.2%;--il:-6.82%;--it:0.76%" data-hue="0" data-sat=".2" aria-label="Identity 04"><img data-av4 alt="Identity 04"></button>
-      <button class="avatar" style="--iw:114.8%;--il:-10.71%;--it:-2.14%" data-hue="0" data-sat=".68" aria-label="Identity 05"><img data-av5 alt="Identity 05"></button>
+      <button type="button" class="avatar active" style="--iw:112.3%;--il:-5.84%;--it:-3.65%;background:#1e3048" data-hue="2" data-sat="1.2" aria-label="Identity 01"><img data-av1 alt="Identity 01"></button>
+      <button type="button" class="avatar" style="--iw:111.5%;--il:-8.82%;--it:-4.41%" data-hue="0" data-sat=".42" aria-label="Identity 02"><img data-av2 alt="Identity 02"></button>
+      <button type="button" class="avatar" style="--iw:113.1%;--il:-4.35%;--it:-0.72%" data-hue="6" data-sat="1.3" aria-label="Identity 03"><img data-av3 alt="Identity 03"></button>
+      <button type="button" class="avatar" style="--iw:108.2%;--il:-6.82%;--it:0.76%" data-hue="0" data-sat=".2" aria-label="Identity 04"><img data-av4 alt="Identity 04"></button>
+      <button type="button" class="avatar" style="--iw:114.8%;--il:-10.71%;--it:-2.14%" data-hue="0" data-sat=".68" aria-label="Identity 05"><img data-av5 alt="Identity 05"></button>
     </div>
 
     <!-- ===== SOCIALS ===== -->
     <div class="socials">
-      <button class="social" data-name="Instagram" aria-label="Instagram">
+      <button type="button" class="social" data-name="Instagram" aria-label="Instagram">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.4-3.1a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/></svg>
       </button>
-      <button class="social" data-name="Facebook" aria-label="Facebook">
+      <button type="button" class="social" data-name="Facebook" aria-label="Facebook">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-2.8h-2.8V9.4c0-.8.2-1.4 1.4-1.4h1.5V5.5c-.9-.1-1.8-.2-2.8-.2-2.2 0-3.7 1.3-3.7 3.8v2.1H9.3V14h2.5v7z"/></svg>
       </button>
-      <button class="social" data-name="Telegram" aria-label="Telegram">
+      <button type="button" class="social" data-name="Telegram" aria-label="Telegram">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 4.3 2.9 11.6c-1 .4-1 1.8.1 2.1l4.8 1.5 1.8 5.8c.2.7 1.1.9 1.6.3l2.7-2.7 4.8 3.5c.6.4 1.5.1 1.7-.7l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.7 14.7l8.2-5.1c.4-.2.8.3.4.6l-6.7 6.1c-.2.2-.4.5-.4.8l-.2 2.4z"/></svg>
       </button>
     </div>
@@ -1157,13 +1161,13 @@ html.intro .avatar{transform:scale(.9)}
               <p class="contact-note">Prefer email? Reach the studio directly.</p>
               <a class="contact-email" href="mailto:hello@nival.studio">hello@nival.studio</a>
               <div class="contact-socials">
-                <button class="social" data-name="Instagram" aria-label="Instagram">
+                <button type="button" class="social" data-name="Instagram" aria-label="Instagram">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.4-3.1a1.2 1.2 0 1 1-1.2 1.2 1.2 1.2 0 0 1 1.2-1.2z"/></svg>
                 </button>
-                <button class="social" data-name="Facebook" aria-label="Facebook">
+                <button type="button" class="social" data-name="Facebook" aria-label="Facebook">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 21v-7h2.4l.4-2.8h-2.8V9.4c0-.8.2-1.4 1.4-1.4h1.5V5.5c-.9-.1-1.8-.2-2.8-.2-2.2 0-3.7 1.3-3.7 3.8v2.1H9.3V14h2.5v7z"/></svg>
                 </button>
-                <button class="social" data-name="Telegram" aria-label="Telegram">
+                <button type="button" class="social" data-name="Telegram" aria-label="Telegram">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.8 4.3 2.9 11.6c-1 .4-1 1.8.1 2.1l4.8 1.5 1.8 5.8c.2.7 1.1.9 1.6.3l2.7-2.7 4.8 3.5c.6.4 1.5.1 1.7-.7l3-14.2c.2-1-.8-1.8-1.7-1.4zM9.7 14.7l8.2-5.1c.4-.2.8.3.4.6l-6.7 6.1c-.2.2-.4.5-.4.8l-.2 2.4z"/></svg>
                 </button>
               </div>
@@ -1214,7 +1218,7 @@ html.intro .avatar{transform:scale(.9)}
       <a href="#pricing" data-route="pricing">Pricing</a>
       <a href="#about" data-route="about">About</a>
       <a href="#contact" data-route="contact">Contact</a>
-      <button class="menu-join join" aria-label="Join us" aria-haspopup="dialog">
+      <button type="button" class="menu-join join" aria-label="Join us" aria-haspopup="dialog">
         <span class="join-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="4"/><path d="M4.5 21c.4-5 3.1-7.3 7.5-7.3s7.1 2.3 7.5 7.3"/></svg></span>
         <span class="join-label">Join us</span>
       </button>
@@ -1276,6 +1280,8 @@ html.intro .avatar{transform:scale(.9)}
   set('[data-hero-back]',A.back);
   set('[data-material]',A.material);
   for(var i=1;i<=5;i++){set('[data-av'+i+']',A.av[i-1]);}
+  // lazy-load the below-the-fold assets (material + gallery avatars)
+  document.querySelectorAll('[data-material],[data-av1],[data-av2],[data-av3],[data-av4],[data-av5]').forEach(function(el){el.loading='lazy';});
   // warm-decode the reveal layer so the spotlight is crisp on first hover
   var hb=document.querySelector('[data-hero-back]');
   if(hb&&hb.decode){hb.decode().catch(function(){});}
@@ -1345,17 +1351,10 @@ html.intro .avatar{transform:scale(.9)}
   resizeCanvas();
   addEventListener('resize',resizeCanvas,{passive:true});
 
-  stack.addEventListener('pointermove',function(e){
-    var r=stack.getBoundingClientRect();
-    // The .stage ancestor is CSS-transform-scaled, so getBoundingClientRect()
-    // returns RENDERED pixels while the mask lives in the element's own
-    // UNSCALED 600x759 space. Divide by the scale or the spotlight drifts.
-    var sx=stack.offsetWidth/r.width;
-    var sy=stack.offsetHeight/r.height;
-    mouse.x=(e.clientX-r.left)*sx;
-    mouse.y=(e.clientY-r.top)*sy;
-  });
-  stack.addEventListener('pointerleave',function(){mouse.x=-9999;mouse.y=-9999;});
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var homeView=stack.closest('.view');   // don't run the mask while Home is hidden
+  var rafId=null;
+  function homeActive(){return !homeView || homeView.classList.contains('is-active');}
 
   function render(x,y){
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -1371,17 +1370,45 @@ html.intro .avatar{transform:scale(.9)}
     back.style.webkitMaskImage='url('+url+')';
   }
 
-  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  var EASE=reduce?1:0.1;                 // snap instantly under reduced motion
-  var homeView=stack.closest('.view');   // pause the costly mask when Home is hidden
+  // rAF runs ONLY while the spotlight is actually easing; it stops itself once
+  // settled, so there is no idle loop and no idle toDataURL each frame.
   function loop(){
-    if(homeView && !homeView.classList.contains('is-active')){requestAnimationFrame(loop);return;}
-    smooth.x+=(mouse.x-smooth.x)*EASE;
-    smooth.y+=(mouse.y-smooth.y)*EASE;
+    smooth.x+=(mouse.x-smooth.x)*0.1;
+    smooth.y+=(mouse.y-smooth.y)*0.1;
     render(smooth.x,smooth.y);
-    requestAnimationFrame(loop);
+    if(Math.abs(mouse.x-smooth.x)<0.5 && Math.abs(mouse.y-smooth.y)<0.5){
+      smooth.x=mouse.x;smooth.y=mouse.y;render(smooth.x,smooth.y);
+      rafId=null;return;
+    }
+    rafId=requestAnimationFrame(loop);
   }
-  loop();
+  function start(){ if(reduce||!homeActive())return; if(!rafId)rafId=requestAnimationFrame(loop); }
+  function stop(){ if(rafId){cancelAnimationFrame(rafId);rafId=null;} }
+
+  stack.addEventListener('pointermove',function(e){
+    if(!homeActive())return;
+    var r=stack.getBoundingClientRect();
+    // .stage is transform-scaled: gBCR returns RENDERED px while the mask lives
+    // in the element's own UNSCALED 600x759 space — divide by the scale.
+    var sx=stack.offsetWidth/r.width;
+    var sy=stack.offsetHeight/r.height;
+    mouse.x=(e.clientX-r.left)*sx;
+    mouse.y=(e.clientY-r.top)*sy;
+    if(reduce){smooth.x=mouse.x;smooth.y=mouse.y;render(smooth.x,smooth.y);}
+    else start();
+  });
+  stack.addEventListener('pointerleave',function(){
+    mouse.x=-9999;mouse.y=-9999;
+    if(reduce)render(mouse.x,mouse.y);
+    else start();
+  });
+
+  // keep the mask buffer sized to the (re-scaled) stack; fully stop while away
+  document.addEventListener('nival:view',function(e){
+    if(!e.detail)return;
+    if(e.detail.id==='home'){resizeCanvas();}
+    else{stop();mouse.x=mouse.y=smooth.x=smooth.y=-9999;render(-9999,-9999);}
+  });
 })();
 
 /* ============================================================
@@ -1499,7 +1526,11 @@ html.intro .avatar{transform:scale(.9)}
   if(!document.startViewTransition){document.documentElement.classList.add('no-vt');}
 
   function apply(id){
-    views.forEach(function(v){v.classList.toggle('is-active',v.getAttribute('data-view')===id);});
+    views.forEach(function(v){
+      var active=v.getAttribute('data-view')===id;
+      v.classList.toggle('is-active',active);
+      if(active)v.removeAttribute('inert'); else v.setAttribute('inert','');
+    });
   }
   function syncNav(id){
     document.querySelectorAll('[data-route]').forEach(function(el){
@@ -1575,7 +1606,6 @@ html.intro .avatar{transform:scale(.9)}
   var say=function(m){ if(window.NIVAL&&window.NIVAL.say)window.NIVAL.say(m); };
 
   function setBill(mode){
-    view.classList.toggle('is-yearly',mode==='yearly');
     btns.forEach(function(b){
       var on=b.getAttribute('data-bill')===mode;
       b.classList.toggle('is-on',on);
@@ -1766,7 +1796,7 @@ html.intro .avatar{transform:scale(.9)}
   var emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   var say=function(m){if(window.NIVAL&&window.NIVAL.say)window.NIVAL.say(m);};
-  var trigger=null,closeTimer=null,prevOverflow='';
+  var trigger=null,closeTimer=null,joined=false;
 
   function focusable(){
     return Array.prototype.slice.call(
@@ -1780,18 +1810,18 @@ html.intro .avatar{transform:scale(.9)}
   function open(t){
     trigger=t||document.activeElement;
     clearTimeout(closeTimer);
-    if(ok)ok.hidden=true;
-    if(form)form.hidden=false;
+    // already a member? show the confirmation instead of asking again
+    if(form)form.hidden=joined;
+    if(ok)ok.hidden=!joined;
     setError('');
     modal.hidden=false;
-    prevOverflow=document.documentElement.style.overflow;
     document.documentElement.style.overflow='hidden';
     requestAnimationFrame(function(){modal.classList.add('is-open');});
-    setTimeout(function(){if(email)email.focus();},40);
+    setTimeout(function(){var f=focusable();(f[0]||card).focus();},40);
   }
   function close(){
     modal.classList.remove('is-open');
-    document.documentElement.style.overflow=prevOverflow;
+    document.documentElement.style.removeProperty('overflow');
     var done=function(){modal.hidden=true;};
     if(reduce)done(); else closeTimer=setTimeout(done,300);
     if(trigger&&trigger.focus)trigger.focus();
@@ -1827,6 +1857,7 @@ html.intro .avatar{transform:scale(.9)}
     say('Welcome to Nival');
   });
   function showOk(){
+    joined=true;
     form.reset();setError('');
     form.hidden=true;
     if(ok){ok.hidden=false;var h=ok.querySelector('h3');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}}
