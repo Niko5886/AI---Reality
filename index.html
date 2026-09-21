@@ -699,6 +699,60 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(17,105,220,.55);outl
   addEventListener('resize',layout,{passive:true});
   if(PHONE.addEventListener)PHONE.addEventListener('change',layout);
 })();
+
+/* ============================================================
+   §5  SPOTLIGHT REVEAL — cursor-following alpha mask on hero-back
+   ============================================================ */
+(function(){
+  var stack=document.querySelector('.hero-stack');
+  var back=document.querySelector('.hero-back');
+  var canvas=document.querySelector('.hero-mask-canvas');
+  if(!stack||!back||!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var SPOTLIGHT_R=185;
+  var mouse={x:-9999,y:-9999},smooth={x:-9999,y:-9999};
+
+  function resizeCanvas(){
+    canvas.width=stack.offsetWidth;
+    canvas.height=stack.offsetHeight;
+  }
+  resizeCanvas();
+  addEventListener('resize',resizeCanvas,{passive:true});
+
+  stack.addEventListener('pointermove',function(e){
+    var r=stack.getBoundingClientRect();
+    // The .stage ancestor is CSS-transform-scaled, so getBoundingClientRect()
+    // returns RENDERED pixels while the mask lives in the element's own
+    // UNSCALED 600x759 space. Divide by the scale or the spotlight drifts.
+    var sx=stack.offsetWidth/r.width;
+    var sy=stack.offsetHeight/r.height;
+    mouse.x=(e.clientX-r.left)*sx;
+    mouse.y=(e.clientY-r.top)*sy;
+  });
+  stack.addEventListener('pointerleave',function(){mouse.x=-9999;mouse.y=-9999;});
+
+  function render(x,y){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var grad=ctx.createRadialGradient(x,y,0,x,y,SPOTLIGHT_R);
+    grad.addColorStop(0,'rgba(255,255,255,1)');
+    grad.addColorStop(0.62,'rgba(255,255,255,1)');  // solid core
+    grad.addColorStop(0.8,'rgba(255,255,255,0.5)'); // soft falloff
+    grad.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=grad;
+    ctx.beginPath();ctx.arc(x,y,SPOTLIGHT_R,0,Math.PI*2);ctx.fill();
+    var url=canvas.toDataURL();
+    back.style.maskImage='url('+url+')';
+    back.style.webkitMaskImage='url('+url+')';
+  }
+
+  function loop(){
+    smooth.x+=(mouse.x-smooth.x)*0.1;
+    smooth.y+=(mouse.y-smooth.y)*0.1;
+    render(smooth.x,smooth.y);
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
 </script>
 </body>
 </html>
