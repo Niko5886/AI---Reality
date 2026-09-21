@@ -497,7 +497,45 @@ img{-webkit-user-drag:none;user-select:none}
 /* ---------- focus-visible ---------- */
 a:focus-visible,button:focus-visible{outline:2px solid rgba(17,105,220,.55);outline-offset:2px}
 .nav a:focus-visible,.avatar:focus-visible,.social:focus-visible,.menu-panel a:focus-visible{outline-offset:3px}
+
+/* ============================================================
+   §7  ENTRANCE ANIMATION — pre-state (removed once timeline ends)
+   ============================================================ */
+html.intro .headline-line{clip-path:inset(0 -.12em 100% -.12em)}
+html.intro .headline-line>*{transform:translateY(.9em)}
+html.intro .brand,
+html.intro .menu,
+html.intro .nav,
+html.intro .join,
+html.intro .feature,
+html.intro .hero,
+html.intro .ghost,
+html.intro .robo-o-avatar,
+html.intro .glass-card,
+html.intro .creator,
+html.intro .material,
+html.intro .avatar,
+html.intro .social{opacity:0}
+html.intro .hero{transform:translateY(22px) scale(.99)}
+html.intro .robo-o-avatar{transform:scale(.88)}
+html.intro .glass-card{transform:translateY(18px)}
+html.intro .creator{transform:translateY(10px)}
+html.intro .material-pill{transform:translateX(16px)}
+html.intro .avatar{transform:scale(.9)}
+
+@media (prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
 </style>
+<script>
+/* §7 — hide the page for the intro (unless reduced motion); hard safety net */
+(function(){
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches){
+    document.documentElement.classList.add('intro');
+    setTimeout(function(){document.documentElement.classList.remove('intro');},5000);
+  }
+})();
+</script>
 </head>
 <body>
 <main class="viewport" aria-label="Nival cyberspace identity experience">
@@ -865,6 +903,98 @@ a:focus-visible,button:focus-visible{outline:2px solid rgba(17,105,220,.55);outl
   document.querySelectorAll('.social').forEach(function(btn){
     btn.addEventListener('click',function(){say((btn.getAttribute('data-name')||'Social')+' selected');});
   });
+})();
+
+/* ============================================================
+   §7  ENTRANCE TIMELINE (Web Animations API, runs once)
+   ============================================================ */
+(function(){
+  var root=document.documentElement;
+  if(!root.classList.contains('intro')||!Element.prototype.animate)return;
+
+  // Wrap line 1's bare text node so it can ride the clip-path mask.
+  var line1=document.querySelector('.headline-line');
+  if(line1 && !line1.querySelector('.hl-rv')){
+    var wrap=document.createElement('span');
+    wrap.className='hl-rv';
+    while(line1.firstChild){wrap.appendChild(line1.firstChild);}
+    line1.appendChild(wrap);
+  }
+
+  var near=innerWidth<640?.6:1;
+  function px(v){return (v*near).toFixed(2)+'px';}
+  var TYPE='cubic-bezier(.16,1,.3,1)';
+  var SOFT='cubic-bezier(.22,.61,.36,1)';
+  var anims=[];
+  function q(sel){return document.querySelectorAll(sel);}
+  function fade(from){return [{opacity:0,transform:from},{opacity:1,transform:'none'}];}
+
+  function run(els,keyframes,dur,at,stagger,easing){
+    Array.prototype.forEach.call(els,function(el,i){
+      anims.push(el.animate(keyframes,{
+        duration:dur*1000,
+        delay:(at+i*(stagger||0))*1000,
+        fill:'both',
+        easing:easing||'ease'
+      }));
+    });
+  }
+
+  // 1 — header
+  run(q('.brand'),fade('translateY(-10px)'),.50,.04,0,SOFT);
+  run(q('.menu'), fade('translateY(-10px)'),.50,.09,0,SOFT);
+  run(q('.nav'),  fade('translateY(-10px)'),.55,.13,0,SOFT);
+  run(q('.join'), fade('translateY(-10px)'),.55,.18,0,SOFT);
+
+  // 2 — headline lines reveal (clip on line + rise on children)
+  Array.prototype.forEach.call(q('.headline-line'),function(line,i){
+    var at=(.22+i*.11)*1000;
+    anims.push(line.animate(
+      [{clipPath:'inset(0 -.12em 100% -.12em)'},{clipPath:'inset(-.34em -.12em -.34em -.12em)'}],
+      {duration:950,delay:at,fill:'both',easing:TYPE}));
+    Array.prototype.forEach.call(line.children,function(child){
+      anims.push(child.animate(
+        [{transform:'translateY(.9em)'},{transform:'none'}],
+        {duration:950,delay:at,fill:'both',easing:TYPE}));
+    });
+  });
+
+  // 3 — hero
+  run(q('.hero'),
+    [{opacity:0,transform:'translateY('+px(22)+') scale(.99)'},{opacity:1,transform:'none'}],
+    1.05,.48,0,TYPE);
+
+  // 4 — features
+  run(q('.feature'),fade('translateX('+px(12)+')'),.55,.52,.07,SOFT);
+
+  // 5 — ghosts + robo-O
+  run(q('.ghost'),[{opacity:0},{opacity:1}],.90,.62,.09,SOFT);
+  run(q('.robo-o-avatar'),fade('scale(.88)'),.62,.80,0,TYPE);
+
+  // 6 — glass card + creator
+  run(q('.glass-card'),fade('translateY('+px(18)+')'),.78,.70,0,TYPE);
+  run(q('.creator'),fade('translateY('+px(10)+')'),.60,.82,0,SOFT);
+
+  // 7 — material + gallery + socials
+  run(q('.material'),[{opacity:0},{opacity:1}],.72,.86,0,SOFT);
+  run(q('.material-pill'),[{transform:'translateX('+px(16)+')'},{transform:'none'}],.72,.86,0,TYPE);
+  run(q('.avatar'),fade('scale(.9)'),.55,.94,.06,TYPE);
+  run(q('.social'),fade('translateY('+px(9)+')'),.50,1.08,.05,SOFT);
+
+  // On the last-finishing animation: freeze the page static forever.
+  var last=null,lastEnd=-1;
+  anims.forEach(function(a){
+    var t=a.effect.getTiming();
+    var end=(t.delay||0)+(typeof t.duration==='number'?t.duration:0);
+    if(end>lastEnd){lastEnd=end;last=a;}
+  });
+  if(last){
+    last.addEventListener('finish',function(){
+      root.classList.remove('intro');
+      anims.forEach(function(a){try{a.cancel();}catch(e){}});
+      anims.length=0;
+    });
+  }
 })();
 </script>
 </body>
