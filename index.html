@@ -526,6 +526,149 @@ html.intro .avatar{transform:scale(.9)}
 @media (prefers-reduced-motion:reduce){
   *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 }
+
+/* ============================================================
+   §8  RESPONSIVE — TIER B (portrait-ish scaled canvas, w/h < 1.05)
+   ============================================================ */
+.stage.is-mobile{
+  background:
+    radial-gradient(circle at 63% 38%,rgba(249,253,255,.87),transparent 26%),
+    linear-gradient(140deg,#d8e9f6,#d3e4f3);
+}
+.stage.is-mobile.is-fit{background:transparent}
+.is-mobile .header{height:88px}
+.is-mobile .brand{left:calc(var(--fx) + 24px);top:31px;width:56px}
+.is-mobile .menu{left:calc(var(--fx) + 96px);top:36px;width:42px}
+.is-mobile .menu span{width:41px}
+.is-mobile .join{right:calc(var(--fx) + 16px);top:23px;width:120px}
+.is-mobile .join-label{font-size:13px;margin-left:7px}
+.is-mobile .headline{left:calc(var(--fx) + 24px);top:112px;width:calc(100% - 48px);font-size:60px;line-height:1.02;letter-spacing:-1.8px;word-spacing:1px}
+.is-mobile .headline-line:first-child{letter-spacing:-2px}
+.is-mobile .headline-line2{margin-top:14px;gap:14px;white-space:normal}
+.is-mobile .chain{width:100px;height:32px;flex:0 0 100px}
+.is-mobile .headline-line2>span{display:block;width:calc(100% - 116px)}
+.is-mobile .features{right:calc(var(--fx) + 24px);top:299px;width:194px;font-size:16px;gap:8px}
+.is-mobile .feature{gap:13px}
+.is-mobile .creator{left:calc(var(--fx) + 24px);right:auto;top:322px}
+.is-mobile .creator-copy{font-size:14px}
+.is-mobile .ghost-one{left:calc(var(--fx) + 13px);top:621px;font-size:142px}
+.is-mobile .o-gap{width:79px}
+.is-mobile .ghost-two{left:364px;top:804px;font-size:104px}
+.is-mobile .robo-o-avatar{left:calc(var(--fx) + 120px);top:623px;width:112px;height:112px;border-width:6px}
+.is-mobile .robo-o-avatar img{left:-3px;top:4px;width:91px;height:116px}
+.is-mobile .hero{left:calc(50% - 284px);top:339px;width:568px;height:719px}
+.is-mobile .material{right:calc(var(--fx) + 16px);top:775px;transform:scale(.78);transform-origin:right center}
+.is-mobile .gallery{right:calc(var(--fx) + 16px);bottom:278px;width:394px;height:132px;display:flex;gap:12px}
+.is-mobile .gallery .avatar{position:relative!important;inset:auto!important;width:70px;height:70px;border-width:5px;flex:0 0 70px}
+.is-mobile .glass-card{left:calc(var(--fx) + 24px);top:auto;bottom:90px;width:calc(100% - 48px);height:214px;padding-left:27px}
+.is-mobile .card-copy{font-size:17px;max-width:340px}
+.is-mobile .count{margin-left:-22px}
+.is-mobile .card-bottom{left:auto;right:19px;bottom:72px;width:230px}
+.is-mobile .start{margin-right:auto}
+.is-mobile .socials{left:calc(var(--fx) + 24px);bottom:28px}
+.is-mobile .toast{bottom:28px}
+
+/* container query relaxes the mobile card/gallery on wide (is-fit) canvases */
+@container (min-width:900px){
+  .stage.is-mobile .glass-card{width:clamp(360px,45%,520px);padding:9px 25px 18px 25px}
+  .stage.is-mobile .card-copy{max-width:none}
+  .stage.is-mobile .card-bottom{left:25px;right:18px;bottom:15px;width:auto}
+  .stage.is-mobile .count{margin-left:-20px}
+  .stage.is-mobile .gallery{right:calc(var(--fx) + 24px);bottom:162px;height:70px;align-items:center}
+}
+
+/* ============================================================
+   §8  RESPONSIVE — TIER C (real phones: natural scrolling grid)
+   ============================================================ */
+@media (max-width:520px) and (orientation:portrait){
+  html,body{height:auto;min-height:100%;overflow-x:hidden;overflow-y:auto}
+  .viewport{position:relative;inset:auto;min-height:100svh;overflow:visible}
+
+  .stage.is-phone{
+    position:relative;left:auto;top:auto;width:100%;height:auto;
+    min-height:100svh;transform:none;background:transparent;
+    --gf:clamp(56px,16.5vw,84px);
+    --gm:clamp(112px,33vw,186px);
+    display:grid;
+    grid-template-columns:1fr auto;
+    grid-template-areas:
+      "head head"
+      "title title"
+      "creator features"
+      "art art"
+      "mat mat"
+      "gal gal"
+      "card card"
+      "soc soc";
+    align-content:start;
+    row-gap:clamp(14px,4vw,22px);
+    column-gap:16px;
+    padding:0 clamp(16px,5vw,24px) clamp(22px,6vw,32px);
+  }
+  .stage.is-phone:before{display:none}
+  .stage.is-phone>*{position:static;inset:auto;margin:0}
+
+  .is-phone .header{grid-area:head;position:relative;height:auto;display:flex;align-items:center;justify-content:space-between;padding:clamp(14px,4vw,20px) 0 0}
+  .is-phone .brand{position:static;width:clamp(56px,16vw,68px);height:auto;aspect-ratio:58/21}
+  .is-phone .menu{position:relative;width:45px;height:19px}
+  .is-phone .menu span{width:45px}
+  .is-phone .menu:after{content:"";position:absolute;inset:-13px -4px}
+  /* menu-panel re-anchored below the header (drops down on open) */
+  .is-phone .menu-panel{position:absolute;left:clamp(16px,5vw,24px);right:clamp(16px,5vw,24px);top:clamp(58px,16vw,80px);width:auto}
+
+  .is-phone .headline{grid-area:title;width:auto;font-size:clamp(24px,7.3vw,38px);line-height:1.1;margin-top:clamp(4px,2vw,10px)}
+  .is-phone .headline-line{white-space:normal}
+  .is-phone .headline-line2{display:block;gap:0;margin-top:.04em}
+  .is-phone .chain{display:inline-block;vertical-align:-.055em;margin-right:.2em}
+
+  .is-phone .creator{grid-area:creator;align-self:start;left:auto;right:auto;top:auto}
+  .is-phone .verified{width:17px;height:17px;flex:0 0 17px}
+  .is-phone .creator-copy{font-size:13px}
+  .is-phone .series{font-size:12px;margin-top:6px}
+
+  .is-phone .features{grid-area:features;font-size:13px;gap:7px;justify-self:end;align-self:start}
+  .is-phone .feature{gap:12px}
+
+  /* --- art layer: hero + ghosts + robo-O share one grid cell, scaled off --gf --- */
+  .is-phone .hero,
+  .is-phone .ghost-one,
+  .is-phone .ghost-two,
+  .is-phone .robo-o-avatar{grid-area:art}
+  .is-phone .hero{width:100%;height:auto;max-width:430px;justify-self:center;left:auto;top:auto;transform:none}
+  .is-phone .hero-front{position:relative;height:auto}
+  .is-phone .hero img{height:auto}
+  .is-phone .ghost{letter-spacing:-.0476em}
+  .is-phone .o-gap{width:.5556em}
+  .is-phone .ghost-one{font-size:var(--gf);justify-self:start;align-self:start;margin-top:var(--gm);left:auto;top:auto;transform:none}
+  .is-phone .ghost-two{font-size:calc(var(--gf) * .87);justify-self:end;align-self:end;margin-bottom:clamp(24px,8vw,52px);left:auto;top:auto}
+  .is-phone .robo-o-avatar{position:relative;font-size:var(--gf);justify-self:start;align-self:start;margin-top:calc(var(--gm) + .0317em);margin-left:.7566em;width:.7566em;height:.7566em;border-width:.0423em;left:auto;top:auto;transform:none}
+  .is-phone .robo-o-avatar img{left:-.0212em;top:.0265em;width:.6138em;height:.7778em}
+
+  .is-phone .material{grid-area:mat;width:100%;height:auto;margin-top:clamp(30px,10vw,56px);right:auto;top:auto;transform:none}
+  .is-phone .material-pill{position:relative;width:100%;height:clamp(64px,18vw,76px);right:auto;bottom:auto}
+  .is-phone .material-thumb{width:clamp(96px,28vw,126px);height:clamp(122px,36vw,161px);bottom:0;left:0}
+  .is-phone .material-thumb img{left:-17.7%;top:19.4%;width:119.1%;height:auto}
+  .is-phone .material-copy{margin-left:clamp(102px,30vw,134px);width:auto;font-size:clamp(14px,4vw,16px)}
+  .is-phone .material-next{width:clamp(48px,14vw,58px);height:clamp(48px,14vw,58px);margin-right:6px}
+
+  .is-phone .gallery{grid-area:gal;width:100%;height:auto;display:flex;gap:clamp(6px,2.2vw,12px);justify-content:space-between;right:auto;bottom:auto}
+  .is-phone .gallery .avatar{position:static;width:auto;height:auto;flex:1 1 0;min-width:0;aspect-ratio:1;border-width:clamp(3px,1.2vw,5px);inset:auto}
+
+  .is-phone .glass-card{grid-area:card;width:auto;height:auto;padding:14px 20px 20px;left:auto;top:auto;bottom:auto}
+  .is-phone .card-top{height:auto;align-items:center}
+  .is-phone .count{margin-left:-14px;min-width:0;padding:8px 18px 7px}
+  .is-phone .eye{width:40px;height:40px;margin:0}
+  .is-phone .card-copy{margin-top:clamp(12px,4vw,16px);font-size:clamp(14px,4.1vw,16px);max-width:none}
+  .is-phone .card-bottom{position:static;height:auto;margin-top:clamp(14px,4.5vw,20px);left:auto;right:auto;bottom:auto;width:auto}
+  .is-phone .start{font-size:clamp(13px,3.8vw,15px);line-height:1.2}
+  .is-phone .start strong{font-size:clamp(16px,4.6vw,19px)}
+  .is-phone .shuffle{width:40px;height:40px;margin-right:clamp(10px,4vw,18px)}
+  .is-phone .play{width:clamp(48px,14vw,56px);height:clamp(48px,14vw,56px)}
+
+  .is-phone .socials{grid-area:soc;display:flex;gap:clamp(12px,4vw,17px);left:auto;bottom:auto}
+  .is-phone .social{width:44px;height:44px}
+  .is-phone .toast{position:absolute;left:50%;top:auto;bottom:clamp(18px,5vw,26px)}
+}
 </style>
 <script>
 /* §7 — hide the page for the intro (unless reduced motion); hard safety net */
